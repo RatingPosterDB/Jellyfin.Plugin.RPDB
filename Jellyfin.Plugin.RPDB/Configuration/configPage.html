@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>RPDB</title>
+</head>
+<body>
+    <div id="FanartConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="FanartConfigForm">
+                    <div class="inputContainer">
+                        <label class="inputeLabel inputLabelUnfocused" for="apikey">RPDB API Key: (required)</label>
+                        <input id="apikey" name="apikey" type="text" is="emby-input" />
+                        <div class="fieldDescription">The RPDB plugin requires an API Key to work, you can get one from ratingposterdb.com</div>
+                        <div class="fieldDescription"><a is="emby-linkbutton" class="button-link" href="https://ratingposterdb.com/" target="_blank">${ButtonLearnMore}</a></div>
+                    </div>
+                    <div class="selectContainer">
+                        <label for="posterType">Poster Type (Tier 1 supports only 'Ratings')</label>
+                        <select is="emby-select" id="posterType">
+                            <option value="poster-default">Ratings</option>
+                            <option value="poster-certs">Ratings + Certification</option>
+                            <option value="poster-rt">IMDB + RT + RT Audience</option>
+                            <option value="poster-mc">IMDB + MC + MC Audience</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="checkboxContainer">
+                            <input is="emby-checkbox" type="checkbox" id="textless" />
+                            <span>Textless Posters (Tier 3 needed)</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="checkboxContainer">
+                            <input is="emby-checkbox" type="checkbox" id="backdrops" />
+                            <span>Backdrops (Tier 3 needed)</span>
+                        </label>
+                    </div>
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var FanartConfig = {
+                pluginUniqueId: '77186ab4-3fce-4054-9207-bccc18c1fc45'
+            };
+
+            $('#FanartConfigPage').on('pageshow', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(FanartConfig.pluginUniqueId).then(function (config) {
+                    $('#apikey').val(config.UserApiKey || '').change();
+                    $('#posterType').val(config.PosterType || 'poster-default');
+                    $('#textless').prop("checked", !!(config.Textless === '1'));
+                    $('#backdrops').prop("checked", !!(config.Backdrops === '1'));
+                    Dashboard.hideLoadingMsg();
+                });
+            });
+
+            $('#FanartConfigForm').on('submit', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(FanartConfig.pluginUniqueId).then(function (config) {
+                    config.UserApiKey = $('#apikey').val();
+                    config.PosterType = $('#posterType').val();
+                    config.Textless = $('#textless:checked').is(':checked') ? '1' : '0';
+                    config.Backdrops = $('#backdrops:checked').is(':checked') ? '1' : '0';
+                    ApiClient.updatePluginConfiguration(FanartConfig.pluginUniqueId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    });
+                });
+                return false;
+            });
+        </script>
+    </div>
+</body>
+</html>
