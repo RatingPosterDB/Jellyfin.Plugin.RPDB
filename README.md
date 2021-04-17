@@ -1,4 +1,4 @@
-# Jellyfin.Plugin.RPDB
+# Jellyfin Plugin for RPDB
 
 Jellyfin Plugin for [Rating Poster Database](https://ratingposterdb.com/).
 
@@ -11,13 +11,10 @@ Currently supports:
 
 To install manually on Jellyfin Server:
 
-- clone or download this repository
-- ensure you have .NET Core SDK setup and installed
-- build plugin with following command:
-```
-dotnet publish --configuration Release --output bin
-```
-- place the resulting file in the plugins folder under the program data directory or inside the portable install directory
+- [download plugin](https://github.com/jaruba/Jellyfin.Plugin.RPDB-bin/releases/download/v1.0.1/Jellyfin.Plugin.RPDB.zip) (built for **Jellyfin v10.7.2**)
+- unpack it
+- move the entire "RPDB" folder to Jellyfin's "plugins" folder
+- restart Jellyfin
 
 
 Setting up the plugin:
