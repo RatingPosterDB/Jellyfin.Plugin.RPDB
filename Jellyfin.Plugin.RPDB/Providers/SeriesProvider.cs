@@ -1,28 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Jellyfin.Plugin.RPDB.Configuration;
-using MediaBrowser.Common.Configuration;
-using MediaBrowser.Common.Json;
-using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
-using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.Extensions;
 using MediaBrowser.Model.IO;
-using MediaBrowser.Model.Net;
 using MediaBrowser.Model.Providers;
-using MediaBrowser.Model.Serialization;
 
 namespace Jellyfin.Plugin.RPDB.Providers
 {
@@ -30,15 +18,11 @@ namespace Jellyfin.Plugin.RPDB.Providers
     {
         private readonly IServerConfigurationManager _config;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IFileSystem _fileSystem;
-
-        private readonly SemaphoreSlim _ensureSemaphore = new SemaphoreSlim(1, 1);
 
         public SeriesProvider(IServerConfigurationManager config, IHttpClientFactory httpClientFactory, IFileSystem fileSystem)
         {
             _config = config;
             _httpClientFactory = httpClientFactory;
-            _fileSystem = fileSystem;
 
             Current = this;
         }
@@ -117,7 +101,6 @@ namespace Jellyfin.Plugin.RPDB.Providers
             }
 
             var posterType = "poster-default";
-            var fallback = "";
 
             if (reqType.Equals("backdrop"))
             {
@@ -138,7 +121,6 @@ namespace Jellyfin.Plugin.RPDB.Providers
             else if (reqType.Equals("poster"))
             {
                 posterType = Plugin.Instance.Configuration.PosterType;
-                fallback = "?fallback=true";
                 var textless = Plugin.Instance.Configuration.Textless;
                 if (textless.Equals("1"))
                 {
@@ -153,7 +135,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
                 }
             }
 
-            var url = string.Format(Plugin.BaseUrl, clientKey, idType, posterType, seriesId, fallback);
+            var url = string.Format(Plugin.BaseUrl, clientKey, idType, posterType, seriesId);
 
             list.Add(new RemoteImageInfo
             {

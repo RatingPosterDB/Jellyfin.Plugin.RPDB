@@ -11,7 +11,7 @@ namespace Jellyfin.Plugin.RPDB
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
         private readonly Guid _id = new Guid("77186ab4-3fce-4054-9207-bccc18c1fc45");
-        public const string BaseUrl = "http://api.ratingposterdb.com/{0}/{1}/{2}/{3}.jpg{4}";
+        public const string BaseUrl = "http://api.ratingposterdb.com/{0}/{1}/{2}/{3}.jpg";
 
         public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer)
             : base(applicationPaths, xmlSerializer)
