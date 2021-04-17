@@ -31,4 +31,5 @@ Setting up the plugin:
 - click the "..." for the same library again
 - select "Refresh Metadata"
 
-![jellyfin](https://user-images.githubusercontent.com/1777923/114306334-5c7f4e00-9ae4-11eb-9856-5eaf40c05309.jpg)
+![jellyfin](https://user-images.githubusercontent.com/1777923/115111376-c7b79d00-9f88-11eb-85f5-af2107e697b4.jpg)
+
