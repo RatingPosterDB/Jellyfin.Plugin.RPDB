@@ -103,6 +103,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
             }
 
             var posterType = "poster-default";
+            var fallback = "";
 
             if (reqType.Equals("backdrop"))
             {
@@ -123,6 +124,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
             else if (reqType.Equals("poster"))
             {
                 posterType = Plugin.Instance.Configuration.PosterType;
+                fallback = "?fallback=true";
                 var textless = Plugin.Instance.Configuration.Textless;
                 if (textless.Equals("1"))
                 {
@@ -137,7 +139,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
                 }
             }
 
-            var url = string.Format(Plugin.BaseUrl, clientKey, idType, posterType, movieId);
+            var url = string.Format(Plugin.BaseUrl, clientKey, idType, posterType, movieId, fallback);
 
             list.Add(new RemoteImageInfo
             {
