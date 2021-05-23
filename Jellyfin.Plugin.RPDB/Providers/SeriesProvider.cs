@@ -124,14 +124,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
                 var textless = Plugin.Instance.Configuration.Textless;
                 if (textless.Equals("1"))
                 {
-                    if (clientKey.StartsWith("t1-") || clientKey.StartsWith("t2-"))
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        posterType = posterType.Replace("poster-", "textless-");
-                    }
+                    posterType = posterType.Replace("poster-", "textless-");
                 }
             }
 
