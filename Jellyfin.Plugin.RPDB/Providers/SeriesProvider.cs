@@ -94,6 +94,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
         {
 
             var clientKey = Plugin.Instance.Configuration.UserApiKey;
+            var extraProps = "";
 
             if (string.IsNullOrWhiteSpace(clientKey))
             {
@@ -126,9 +127,15 @@ namespace Jellyfin.Plugin.RPDB.Providers
                 {
                     posterType = posterType.Replace("poster-", "textless-");
                 }
+                var posterLang = Plugin.Instance.Configuration.PosterLang;
+                if (!posterLang.Equals("en"))
+                {
+                    extraProps += "?lang=";
+                    extraProps += posterLang;
+                }
             }
 
-            var url = string.Format(Plugin.BaseUrl, clientKey, idType, posterType, seriesId);
+            var url = string.Format(Plugin.BaseUrl, clientKey, idType, posterType, seriesId, extraProps);
 
             list.Add(new RemoteImageInfo
             {
