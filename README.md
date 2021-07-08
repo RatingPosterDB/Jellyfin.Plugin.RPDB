@@ -6,12 +6,13 @@ Jellyfin Plugin for [Rating Poster Database](https://ratingposterdb.com/).
 Currently supports:
 - Choosing poster type (Tier 1+): 4 available options
 - Textless posters (Tier 1+)
+- Poster Language (Tier 2+)
 - Backdrops (Tier 3+)
 
 
 To install manually on Jellyfin Server:
 
-- [download plugin](https://github.com/jaruba/Jellyfin.Plugin.RPDB-bin/releases/download/v1.0.2/Jellyfin.Plugin.RPDB.zip) (built for **Jellyfin v10.7.5**)
+- [download plugin](https://github.com/jaruba/Jellyfin.Plugin.RPDB-bin/releases/download/v1.0.3/Jellyfin.Plugin.RPDB.zip) (built for **Jellyfin v10.7.6**)
 - unpack it
 - move the entire "RPDB" folder to Jellyfin's "plugins" folder
 - restart Jellyfin
@@ -31,5 +32,10 @@ Setting up the plugin:
 - click the "..." for the same library again
 - select "Refresh Metadata"
 
+Result screenshot:
+
 ![jellyfin](https://user-images.githubusercontent.com/1777923/115111376-c7b79d00-9f88-11eb-85f5-af2107e697b4.jpg)
 
+Settings screenshot:
+
+![Jellyfin-Plugin-Settings](https://user-images.githubusercontent.com/1777923/124392733-f0d20900-dcff-11eb-9d83-4b25154d57f9.png)
