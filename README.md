@@ -12,7 +12,7 @@ Currently supports:
 
 To install manually on Jellyfin Server:
 
-- [download plugin](https://github.com/jaruba/Jellyfin.Plugin.RPDB-bin/releases/download/v1.0.3/Jellyfin.Plugin.RPDB.zip) (built for **Jellyfin v10.7.6**)
+- [download plugin](https://github.com/jaruba/Jellyfin.Plugin.RPDB-bin/releases/download/v1.0.4/Jellyfin.Plugin.RPDB.zip) (built for **Jellyfin v10.7.6**)
 - unpack it
 - move the entire "RPDB" folder to Jellyfin's "plugins" folder
 - restart Jellyfin
