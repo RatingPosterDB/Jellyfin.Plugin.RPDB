@@ -17,6 +17,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
     public class MovieProvider : IRemoteImageProvider, IHasOrder
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        public const string BaseTmdbId = "movie-{0}";
 
         public MovieProvider(IServerConfigurationManager config, IHttpClientFactory httpClientFactory, IFileSystem fileSystem)
         {
@@ -55,7 +56,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
             if (string.IsNullOrEmpty(movieId))
             {
                 idType = "tmdb";
-                movieId = baseItem.GetProviderId(MetadataProvider.Tmdb);
+                movieId = string.Format(BaseTmdbId, baseItem.GetProviderId(MetadataProvider.Tmdb));
             }
 
             if (!string.IsNullOrEmpty(movieId))

@@ -18,6 +18,7 @@ namespace Jellyfin.Plugin.RPDB.Providers
     {
         private readonly IServerConfigurationManager _config;
         private readonly IHttpClientFactory _httpClientFactory;
+        public const string BaseTmdbId = "series-{0}";
 
         public SeriesProvider(IServerConfigurationManager config, IHttpClientFactory httpClientFactory, IFileSystem fileSystem)
         {
@@ -58,6 +59,12 @@ namespace Jellyfin.Plugin.RPDB.Providers
 
             var idType = "imdb";
             var seriesId = series.GetProviderId(MetadataProvider.Imdb);
+
+            if (string.IsNullOrEmpty(seriesId))
+            {
+                idType = "tmdb";
+                seriesId = string.Format(BaseTmdbId, series.GetProviderId(MetadataProvider.Tmdb));
+            }
 
             if (string.IsNullOrEmpty(seriesId))
             {
