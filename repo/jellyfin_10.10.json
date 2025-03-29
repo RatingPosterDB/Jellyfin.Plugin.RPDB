@@ -1,0 +1,21 @@
+[
+    {
+        "category": "Metadata",
+        "guid": "72186ab4-3fce-4054-9207-bcdd18c9fc45",
+        "name": "RatingPosterDB",
+        "description": "Ratings from IMDB, Metacritic and Rotten Tomatoes burned on posters and backdrops directly! This plugin requires a RPDB API Key.",
+        "owner": "jaruba",
+        "overview": "Ratings from IMDB, Metacritic and Rotten Tomatoes burned on posters and backdrops directly!",
+        "imageUrl": "https://raw.githubusercontent.com/RatingPosterDB/Jellyfin.Plugin.RPDB/refs/heads/main/Jellyfin.Plugin.RPDB/thumb.png",
+        "versions": [
+            {
+                "checksum": "bdf324d1aa0fb2431d07db46a5ef5a61",
+                "changelog": "added all new RPDB Features and updated libraries",
+                "targetAbi": "10.10.0.0",
+                "sourceUrl": "https://github.com/RatingPosterDB/Jellyfin.Plugin.RPDB/releases/download/v1.0.1.4/RPDB_1.0.1.4_jellyfin_10.10.zip",
+                "timestamp": "2025-03-29T17:05:38.760Z",
+                "version": "1.0.1.4"
+            }
+        ]
+    }
+]
