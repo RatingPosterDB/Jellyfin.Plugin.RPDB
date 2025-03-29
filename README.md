@@ -6,31 +6,36 @@ Jellyfin Plugin for [Rating Poster Database](https://ratingposterdb.com/).
 Currently supports:
 - Choosing poster type (Tier 1+): 4 available options
 - Textless posters (Tier 1+)
-- Poster Language (Tier 2+)
-- Backdrops (Tier 3+)
+- Poster Language (Tier 1+)
+- Backdrops (Tier 2+)
+- Custom Rating Order (from 11 rating sources) (Tier 2+)
+- Badges (Tier 2+)
+- Image Styling (size, bar position, bar color, font color, etc) (Tier 3+)
 
 
 To install manually on Jellyfin Server:
 
-- [download plugin](https://github.com/jaruba/Jellyfin.Plugin.RPDB-bin/releases/latest/download/Jellyfin.Plugin.RPDB.zip) (built for **Jellyfin v10.7.6**)
+- [download plugin](https://github.com/jaruba/Jellyfin.Plugin.RPDB-bin/releases/latest/download/Jellyfin.Plugin.RPDB.zip) (built for **Jellyfin v10.10.6**)
 - unpack it
-- move the entire "RPDB_1.0.0.3" folder to Jellyfin's "plugins" folder
+- move the entire "RPDB_1.0.1.3" folder to Jellyfin's "plugins" folder
 - restart Jellyfin
 
+## Setting up the plugin
 
-Setting up the plugin:
-
+- disable IPv6 support on the device where you run your server (this is important as it can cause very high load times and even fail the image download)
 - go to Settings > Advanced > Plugins
-- click the RPDB plugin to set it up
+- click the RatingPosterDB plugin to set it up
 - click "Save" to save settings
 - go to Settings > Server > Library
 - hover the libraries that you want to use RPDB with
 - click the "..." to access the library's settings
-- scroll down to "Movie Image Fetchers"
-- enable the RPDB plugin from the list
-- move the RPDB plugin to the top of the "Movie Image Fetchers" list
+- scroll down to "Movie Image Fetchers" (for series this is "Series Image Fetchers")
+- enable the RatingPosterDB plugin from the list
+- move the RatingPosterDB plugin to the top of the "Movie Image Fetchers" list
 - click the "..." for the same library again
-- select "Refresh Metadata"
+- select "Scan Library"
+- under "Refresh mode" choose "Replace all metadata"
+- enable "Replace existing images"
 
 Result screenshot:
 
@@ -38,4 +43,4 @@ Result screenshot:
 
 Settings screenshot:
 
-![Jellyfin-Plugin-Settings](https://user-images.githubusercontent.com/1777923/124392733-f0d20900-dcff-11eb-9d83-4b25154d57f9.png)
+![Jellyfin-Plugin-Settings](https://github.com/user-attachments/assets/0fac8bd3-2300-4475-9957-90110c2a801c)
