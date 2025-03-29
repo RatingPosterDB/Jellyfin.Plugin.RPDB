@@ -1,0 +1,16 @@
+---
+name: "Rating Poster Database"
+guid: "72186ab4-3fce-4054-9207-bcdd18c9fc45"
+version: "1.0.1.2"
+targetAbi: "10.9.0.0"
+framework: "net8.0"
+owner: "jaruba"
+overview: "Ratings from IMDB, Metacritic and Rotten Tomatoes burned on posters and backdrops directly!"
+description: >
+  Ratings from IMDB, Metacritic and Rotten Tomatoes burned on posters and backdrops directly!
+  This plugin requires a RPDB API Key.
+category: "Metadata"
+artifacts:
+- "Jellyfin.Plugin.RPDB.dll"
+changelog: >
+  changelog

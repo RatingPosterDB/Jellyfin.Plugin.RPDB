@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Rating Poster DB</title>
+</head>
+<body>
+    <div id="RpdbConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <img src="https://ratingposterdb.com/static/rpdb-cover.jpg" style="max-width: 100%" />
+                <br/>
+                <br/>
+                <form id="RpdbConfigForm">
+                    <div class="keyHandler">
+                        <span>Rating Poster Database is a service that adds posters with ratings (IMDB, Rotten Tomatoes, Metacritic, etc) to Jellyfin libraries, it supports many rating types, textless posters, posters translated in many languages, adding badges (4k, HDR, DoVi, etc) and more.</span>
+                        <br/>
+                        <br/>
+                        <input is="emby-input" type="text" id="txtRpdbApiKey" label="RPDB API Key: (required)" />
+                        <div class="fieldDescription">The RPDB plugin requires an API Key to work, you can get one from ratingposterdb.com</div>
+                        <div class="fieldDescription"><a is="emby-linkbutton" class="button-link" href="https://ratingposterdb.com/" target="_blank">Get API Key</a></div>
+                        <div class="invalidKey" style="color: red; display: none"><br/>This RPDB API Key is not valid<br/><br/></div>
+                    </div>
+                    <div>
+                        <button is="emby-button" type="button" class="raised button-submit block load-key"><span>Load Key</span></button>
+                    </div>
+                    <div class="rpdbSettings" style="display: none">
+                        <a is="emby-linkbutton" class="button-link button-change-key" href="#">Change API Key</a>
+                        <br/>
+                        <br/>
+                        <a is="emby-linkbutton" class="button-link" href="https://github.com/RatingPosterDB/Jellyfin.Plugin.RPDB/blob/main/README.md#setting-up-the-plugin" target="_blank">Setup Instructions</a>
+                        <br/>
+                        <br/>
+                        <div class="selectContainer">
+                            <label for="posterType">Poster Type (Tier 1+)</label>
+                            <select is="emby-select" id="posterType">
+                                <option value="poster-default">Ratings</option>
+                                <option value="poster-certs">Ratings + Certification (Tier 1+)</option>
+                                <option value="poster-rt">IMDB + RT + RT Audience (Tier 1+)</option>
+                                <option value="poster-mc">IMDB + MC + MC Audience (Tier 1+)</option>
+                                <option value="rating-order">Custom Order (Tier 2+)</option>
+                            </select>
+                        </div>
+                        <div class="customOrderSettings" style="display: none">
+                            <span>Only 3 ratings can show at one time on a poster, if one of the first 3 ratings is missing, a backup rating will be used (if available)</span>
+                            <br/><br/>
+                            <div class="selectContainer">
+                                <label for="firstRating">1st Rating</label>
+                                <select is="emby-select" id="firstRating">
+                                    <option value="imdb" selected>IMDB</option>
+                                    <option value="tmdb">TMDB</option>
+                                    <option value="trakt">Trakt</option>
+                                    <option value="tomatoes-critics">Rotten Tomatoes Critics</option>
+                                    <option value="tomatoes-audience">Rotten Tomatoes Audience</option>
+                                    <option value="metacritic-critics">Metacritic Critics</option>
+                                    <option value="metacritic-audience">Metacritic Audience</option>
+                                    <option value="letterboxd">Letterboxd</option>
+                                    <option value="rogerebert">Roger Ebert</option>
+                                    <option value="myanimelist">MyAnimeList</option>
+                                    <option value="commonsense">Common Sense</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="secondRating">2nd Rating</label>
+                                <select is="emby-select" id="secondRating">
+                                    <option value="none">None</option>
+                                    <option value="imdb">IMDB</option>
+                                    <option value="tmdb">TMDB</option>
+                                    <option value="trakt">Trakt</option>
+                                    <option value="tomatoes-critics" selected>Rotten Tomatoes Critics</option>
+                                    <option value="tomatoes-audience">Rotten Tomatoes Audience</option>
+                                    <option value="metacritic-critics">Metacritic Critics</option>
+                                    <option value="metacritic-audience">Metacritic Audience</option>
+                                    <option value="letterboxd">Letterboxd</option>
+                                    <option value="rogerebert">Roger Ebert</option>
+                                    <option value="myanimelist">MyAnimeList</option>
+                                    <option value="commonsense">Common Sense</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="thirdRating">3rd Rating</label>
+                                <select is="emby-select" id="thirdRating">
+                                    <option value="none">None</option>
+                                    <option value="imdb">IMDB</option>
+                                    <option value="tmdb">TMDB</option>
+                                    <option value="trakt">Trakt</option>
+                                    <option value="tomatoes-critics">Rotten Tomatoes Critics</option>
+                                    <option value="tomatoes-audience">Rotten Tomatoes Audience</option>
+                                    <option value="metacritic-critics" selected>Metacritic Critics</option>
+                                    <option value="metacritic-audience">Metacritic Audience</option>
+                                    <option value="letterboxd">Letterboxd</option>
+                                    <option value="rogerebert">Roger Ebert</option>
+                                    <option value="myanimelist">MyAnimeList</option>
+                                    <option value="commonsense">Common Sense</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="firstBackupRating">1st Backup Rating</label>
+                                <select is="emby-select" id="firstBackupRating">
+                                    <option value="none" selected>None</option>
+                                    <option value="imdb">IMDB</option>
+                                    <option value="tmdb">TMDB</option>
+                                    <option value="trakt">Trakt</option>
+                                    <option value="tomatoes-critics">Rotten Tomatoes Critics</option>
+                                    <option value="tomatoes-audience">Rotten Tomatoes Audience</option>
+                                    <option value="metacritic-critics">Metacritic Critics</option>
+                                    <option value="metacritic-audience">Metacritic Audience</option>
+                                    <option value="letterboxd">Letterboxd</option>
+                                    <option value="rogerebert">Roger Ebert</option>
+                                    <option value="myanimelist">MyAnimeList</option>
+                                    <option value="commonsense">Common Sense</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="secondBackupRating">2nd Backup Rating</label>
+                                <select is="emby-select" id="secondBackupRating">
+                                    <option value="none" selected>None</option>
+                                    <option value="imdb">IMDB</option>
+                                    <option value="tmdb">TMDB</option>
+                                    <option value="trakt">Trakt</option>
+                                    <option value="tomatoes-critics">Rotten Tomatoes Critics</option>
+                                    <option value="tomatoes-audience">Rotten Tomatoes Audience</option>
+                                    <option value="metacritic-critics">Metacritic Critics</option>
+                                    <option value="metacritic-audience">Metacritic Audience</option>
+                                    <option value="letterboxd">Letterboxd</option>
+                                    <option value="rogerebert">Roger Ebert</option>
+                                    <option value="myanimelist">MyAnimeList</option>
+                                    <option value="commonsense">Common Sense</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="thirdBackupRating">3rd Backup Rating</label>
+                                <select is="emby-select" id="thirdBackupRating">
+                                    <option value="none" selected>None</option>
+                                    <option value="imdb">IMDB</option>
+                                    <option value="tmdb">TMDB</option>
+                                    <option value="trakt">Trakt</option>
+                                    <option value="tomatoes-critics">Rotten Tomatoes Critics</option>
+                                    <option value="tomatoes-audience">Rotten Tomatoes Audience</option>
+                                    <option value="metacritic-critics">Metacritic Critics</option>
+                                    <option value="metacritic-audience">Metacritic Audience</option>
+                                    <option value="letterboxd">Letterboxd</option>
+                                    <option value="rogerebert">Roger Ebert</option>
+                                    <option value="myanimelist">MyAnimeList</option>
+                                    <option value="commonsense">Common Sense</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="checkboxContainer">
+                                <input is="emby-checkbox" type="checkbox" id="textless" />
+                                <span>Textless Posters (Tier 1+)</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="checkboxContainer">
+                                <input is="emby-checkbox" type="checkbox" id="backdrops" />
+                                <span>Backdrops (Tier 2+)</span>
+                            </label>
+                        </div>
+                        <div class="selectContainer">
+                            <label for="posterLang">Poster Language (Tier 1+)</label>
+                            <select is="emby-select" id="posterLang">
+                                <option value="en">
+                                    English (en)
+                                </option>
+                                <option value="ab">
+                                    Abkhazian (ab)
+                                </option>
+                                <option value="aa">
+                                    Afar (aa)
+                                </option>
+                                <option value="af">
+                                    Afrikaans (af)
+                                </option>
+                                <option value="ak">
+                                    Akan (ak)
+                                </option>
+                                <option value="sq">
+                                    Albanian (sq)
+                                </option>
+                                <option value="am">
+                                    Amharic (am)
+                                </option>
+                                <option value="ar">
+                                    Arabic (ar)
+                                </option>
+                                <option value="an">
+                                    Aragonese (an)
+                                </option>
+                                <option value="hy">
+                                    Armenian (hy)
+                                </option>
+                                <option value="as">
+                                    Assamese (as)
+                                </option>
+                                <option value="av">
+                                    Avaric (av)
+                                </option>
+                                <option value="ae">
+                                    Avestan (ae)
+                                </option>
+                                <option value="ay">
+                                    Aymara (ay)
+                                </option>
+                                <option value="az">
+                                    Azerbaijani (az)
+                                </option>
+                                <option value="bm">
+                                    Bambara (bm)
+                                </option>
+                                <option value="ba">
+                                    Bashkir (ba)
+                                </option>
+                                <option value="eu">
+                                    Basque (eu)
+                                </option>
+                                <option value="be">
+                                    Belarusian (be)
+                                </option>
+                                <option value="bn">
+                                    Bengali (bn)
+                                </option>
+                                <option value="bi">
+                                    Bislama (bi)
+                                </option>
+                                <option value="nb">
+                                    Bokmål, Norwegian; Norwegian Bokmål (nb)
+                                </option>
+                                <option value="bs">
+                                    Bosnian (bs)
+                                </option>
+                                <option value="br">
+                                    Breton (br)
+                                </option>
+                                <option value="bg">
+                                    Bulgarian (bg)
+                                </option>
+                                <option value="my">
+                                    Burmese (my)
+                                </option>
+                                <option value="cn">
+                                    Cantonese (cn)
+                                </option>
+                                <option value="ca">
+                                    Catalan; Valencian (ca)
+                                </option>
+                                <option value="km">
+                                    Central Khmer (km)
+                                </option>
+                                <option value="ch">
+                                    Chamorro (ch)
+                                </option>
+                                <option value="ce">
+                                    Chechen (ce)
+                                </option>
+                                <option value="ny">
+                                    Chichewa; Chewa; Nyanja (ny)
+                                </option>
+                                <option value="zh">
+                                    Chinese (zh)
+                                </option>
+                                <option value="cv">
+                                    Chuvash (cv)
+                                </option>
+                                <option value="kw">
+                                    Cornish (kw)
+                                </option>
+                                <option value="co">
+                                    Corsican (co)
+                                </option>
+                                <option value="cr">
+                                    Cree (cr)
+                                </option>
+                                <option value="hr">
+                                    Croatian (hr)
+                                </option>
+                                <option value="cs">
+                                    Czech (cs)
+                                </option>
+                                <option value="da">
+                                    Danish (da)
+                                </option>
+                                <option value="dv">
+                                    Divehi; Dhivehi; Maldivian (dv)
+                                </option>
+                                <option value="nl">
+                                    Dutch; Flemish (nl)
+                                </option>
+                                <option value="dz">
+                                    Dzongkha (dz)
+                                </option>
+                                <option value="eo">
+                                    Esperanto (eo)
+                                </option>
+                                <option value="et">
+                                    Estonian (et)
+                                </option>
+                                <option value="ee">
+                                    Ewe (ee)
+                                </option>
+                                <option value="fo">
+                                    Faroese (fo)
+                                </option>
+                                <option value="fj">
+                                    Fijian (fj)
+                                </option>
+                                <option value="fi">
+                                    Finnish (fi)
+                                </option>
+                                <option value="fr">
+                                    French (fr)
+                                </option>
+                                <option value="ff">
+                                    Fulah (ff)
+                                </option>
+                                <option value="gd">
+                                    Gaelic; Scottish Gaelic (gd)
+                                </option>
+                                <option value="gl">
+                                    Galician (gl)
+                                </option>
+                                <option value="lg">
+                                    Ganda (lg)
+                                </option>
+                                <option value="ka">
+                                    Georgian (ka)
+                                </option>
+                                <option value="de">
+                                    German (de)
+                                </option>
+                                <option value="el">
+                                    Greek (el)
+                                </option>
+                                <option value="gn">
+                                    Guarani (gn)
+                                </option>
+                                <option value="gu">
+                                    Gujarati (gu)
+                                </option>
+                                <option value="ht">
+                                    Haitian; Haitian Creole (ht)
+                                </option>
+                                <option value="ha">
+                                    Hausa (ha)
+                                </option>
+                                <option value="he">
+                                    Hebrew (he)
+                                </option>
+                                <option value="hz">
+                                    Herero (hz)
+                                </option>
+                                <option value="hi">
+                                    Hindi (hi)
+                                </option>
+                                <option value="ho">
+                                    Hiri Motu (ho)
+                                </option>
+                                <option value="hu">
+                                    Hungarian (hu)
+                                </option>
+                                <option value="is">
+                                    Icelandic (is)
+                                </option>
+                                <option value="io">
+                                    Ido (io)
+                                </option>
+                                <option value="ig">
+                                    Igbo (ig)
+                                </option>
+                                <option value="id">
+                                    Indonesian (id)
+                                </option>
+                                <option value="ia">
+                                    Interlingua (ia)
+                                </option>
+                                <option value="ie">
+                                    Interlingue; Occidental (ie)
+                                </option>
+                                <option value="iu">
+                                    Inuktitut (iu)
+                                </option>
+                                <option value="ik">
+                                    Inupiaq (ik)
+                                </option>
+                                <option value="ga">
+                                    Irish (ga)
+                                </option>
+                                <option value="it">
+                                    Italian (it)
+                                </option>
+                                <option value="ja">
+                                    Japanese (ja)
+                                </option>
+                                <option value="jv">
+                                    Javanese (jv)
+                                </option>
+                                <option value="kl">
+                                    Kalaallisut; Greenlandic (kl)
+                                </option>
+                                <option value="kn">
+                                    Kannada (kn)
+                                </option>
+                                <option value="kr">
+                                    Kanuri (kr)
+                                </option>
+                                <option value="ks">
+                                    Kashmiri (ks)
+                                </option>
+                                <option value="kk">
+                                    Kazakh (kk)
+                                </option>
+                                <option value="ki">
+                                    Kikuyu; Gikuyu (ki)
+                                </option>
+                                <option value="rw">
+                                    Kinyarwanda (rw)
+                                </option>
+                                <option value="ky">
+                                    Kirghiz; Kyrgyz (ky)
+                                </option>
+                                <option value="kv">
+                                    Komi (kv)
+                                </option>
+                                <option value="kg">
+                                    Kongo (kg)
+                                </option>
+                                <option value="ko">
+                                    Korean (ko)
+                                </option>
+                                <option value="kj">
+                                    Kuanyama; Kwanyama (kj)
+                                </option>
+                                <option value="ku">
+                                    Kurdish (ku)
+                                </option>
+                                <option value="lo">
+                                    Lao (lo)
+                                </option>
+                                <option value="la">
+                                    Latin (la)
+                                </option>
+                                <option value="lv">
+                                    Latvian (lv)
+                                </option>
+                                <option value="li">
+                                    Limburgan; Limburger; Limburgish (li)
+                                </option>
+                                <option value="ln">
+                                    Lingala (ln)
+                                </option>
+                                <option value="lt">
+                                    Lithuanian (lt)
+                                </option>
+                                <option value="lu">
+                                    Luba-Katanga (lu)
+                                </option>
+                                <option value="lb">
+                                    Luxembourgish; Letzeburgesch (lb)
+                                </option>
+                                <option value="mk">
+                                    Macedonian (mk)
+                                </option>
+                                <option value="mg">
+                                    Malagasy (mg)
+                                </option>
+                                <option value="ms">
+                                    Malay (ms)
+                                </option>
+                                <option value="ml">
+                                    Malayalam (ml)
+                                </option>
+                                <option value="mt">
+                                    Maltese (mt)
+                                </option>
+                                <option value="gv">
+                                    Manx (gv)
+                                </option>
+                                <option value="mi">
+                                    Maori (mi)
+                                </option>
+                                <option value="mr">
+                                    Marathi (mr)
+                                </option>
+                                <option value="mh">
+                                    Marshallese (mh)
+                                </option>
+                                <option value="mo">
+                                    Moldavian; Moldovan (mo)
+                                </option>
+                                <option value="mn">
+                                    Mongolian (mn)
+                                </option>
+                                <option value="na">
+                                    Nauru (na)
+                                </option>
+                                <option value="nv">
+                                    Navajo; Navaho (nv)
+                                </option>
+                                <option value="nd">
+                                    Ndebele, North; North Ndebele (nd)
+                                </option>
+                                <option value="nr">
+                                    Ndebele, South; South Ndebele (nr)
+                                </option>
+                                <option value="ng">
+                                    Ndonga (ng)
+                                </option>
+                                <option value="ne">
+                                    Nepali (ne)
+                                </option>
+                                <option value="se">
+                                    Northern Sami (se)
+                                </option>
+                                <option value="no">
+                                    Norwegian (no)
+                                </option>
+                                <option value="nn">
+                                    Norwegian Nynorsk; Nynorsk, Norwegian (nn)
+                                </option>
+                                <option value="oc">
+                                    Occitan (post 1500) (oc)
+                                </option>
+                                <option value="nj">
+                                    Ojibwa (oj)
+                                </option>
+                                <option value="or">
+                                    Oriya (or)
+                                </option>
+                                <option value="om">
+                                    Oromo (om)
+                                </option>
+                                <option value="os">
+                                    Ossetian; Ossetic (os)
+                                </option>
+                                <option value="pi">
+                                    Pali (pi)
+                                </option>
+                                <option value="pa">
+                                    Panjabi; Punjabi (pa)
+                                </option>
+                                <option value="fa">
+                                    Persian (fa)
+                                </option>
+                                <option value="pl">
+                                    Polish (pl)
+                                </option>
+                                <option value="pt">
+                                    Portuguese (pt)
+                                </option>
+                                <option value="ps">
+                                    Pushto; Pashto (ps)
+                                </option>
+                                <option value="qu">
+                                    Quechua (qu)
+                                </option>
+                                <option value="ro">
+                                    Romanian (ro)
+                                </option>
+                                <option value="rm">
+                                    Romansh (rm)
+                                </option>
+                                <option value="rn">
+                                    Rundi (rn)
+                                </option>
+                                <option value="ru">
+                                    Russian (ru)
+                                </option>
+                                <option value="sm">
+                                    Samoan (sm)
+                                </option>
+                                <option value="sg">
+                                    Sango (sg)
+                                </option>
+                                <option value="sa">
+                                    Sanskrit (sa)
+                                </option>
+                                <option value="sc">
+                                    Sardinian (sc)
+                                </option>
+                                <option value="sr">
+                                    Serbian (sr)
+                                </option>
+                                <option value="sh">
+                                    Serbo-Croatian (sh)
+                                </option>
+                                <option value="sn">
+                                    Shona (sn)
+                                </option>
+                                <option value="ii">
+                                    Sichuan Yi; Nuosu (ii)
+                                </option>
+                                <option value="sd">
+                                    Sindhi (sd)
+                                </option>
+                                <option value="si">
+                                    Sinhala; Sinhalese (si)
+                                </option>
+                                <option value="sk">
+                                    Slovak (sk)
+                                </option>
+                                <option value="sl">
+                                    Slovenian (sl)
+                                </option>
+                                <option value="so">
+                                    Somali (so)
+                                </option>
+                                <option value="st">
+                                    Sotho, Southern (st)
+                                </option>
+                                <option value="es">
+                                    Spanish; Castilian (es)
+                                </option>
+                                <option value="su">
+                                    Sundanese (su)
+                                </option>
+                                <option value="sw">
+                                    Swahili (sw)
+                                </option>
+                                <option value="ss">
+                                    Swati (ss)
+                                </option>
+                                <option value="sv">
+                                    Swedish (sv)
+                                </option>
+                                <option value="tl">
+                                    Tagalog (tl)
+                                </option>
+                                <option value="ty">
+                                    Tahitian (ty)
+                                </option>
+                                <option value="tg">
+                                    Tajik (tg)
+                                </option>
+                                <option value="ta">
+                                    Tamil (ta)
+                                </option>
+                                <option value="tt">
+                                    Tatar (tt)
+                                </option>
+                                <option value="te">
+                                    Telugu (te)
+                                </option>
+                                <option value="th">
+                                    Thai (th)
+                                </option>
+                                <option value="bo">
+                                    Tibetan (bo)
+                                </option>
+                                <option value="ti">
+                                    Tigrinya (ti)
+                                </option>
+                                <option value="to">
+                                    Tonga (Tonga Islands) (to)
+                                </option>
+                                <option value="ts">
+                                    Tsonga (ts)
+                                </option>
+                                <option value="tn">
+                                    Tswana (tn)
+                                </option>
+                                <option value="tr">
+                                    Turkish (tr)
+                                </option>
+                                <option value="tk">
+                                    Turkmen (tk)
+                                </option>
+                                <option value="tw">
+                                    Twi (tw)
+                                </option>
+                                <option value="ug">
+                                    Uighur; Uyghur (ug)
+                                </option>
+                                <option value="uk">
+                                    Ukrainian (uk)
+                                </option>
+                                <option value="uk">
+                                    Urdu (ur)
+                                </option>
+                                <option value="uz">
+                                    Uzbek (uz)
+                                </option>
+                                <option value="ve">
+                                    Venda (ve)
+                                </option>
+                                <option value="vi">
+                                    Vietnamese (vi)
+                                </option>
+                                <option value="vo">
+                                    Volapük (vo)
+                                </option>
+                                <option value="wa">
+                                    Walloon (wa)
+                                </option>
+                                <option value="cy">
+                                    Welsh (cy)
+                                </option>
+                                <option value="fy">
+                                    Western Frisian (fy)
+                                </option>
+                                <option value="wo">
+                                    Wolof (wo)
+                                </option>
+                                <option value="xh">
+                                    Xhosa (xh)
+                                </option>
+                                <option value="yi">
+                                    Yiddish (yi)
+                                </option>
+                                <option value="yo">
+                                    Yoruba (yo)
+                                </option>
+                                <option value="za">
+                                    Zhuang; Chuang (za)
+                                </option>
+                                <option value="zu">
+                                    Zulu (zu)
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="checkboxContainer">
+                                <input is="emby-checkbox" type="checkbox" id="addBadges"/>
+                                <span>Add Badges to Posters (4K, HDR, DoVi, etc) (Tier 2+)</span>
+                            </label>
+                        </div>
+                        <div id="badgesSettings" style="display: none">
+                            <span>Badges will be added to the poster (based on the selected preferences) up to a maximum of 4 badges per poster (depending on what the video supports)</span>
+                            <br/><br/>
+                            <div class="selectContainer">
+                                <label for="badgeSize">Badge Size</label>
+                                <select is="emby-select" id="badgeSize">
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="small">Small</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="badgePos">Poster Badge Position (Tier 3+)</label>
+                                <select is="emby-select" id="badgePos">
+                                    <option value="left" selected>Top Left</option>
+                                    <option value="center">Top Center</option>
+                                    <option value="right">Top Right</option>
+                                    <option value="bottom%7Cleft">Bottom Left</option>
+                                    <option value="bottom%7Ccenter">Bottom Center</option>
+                                    <option value="bottom%7Cright">Bottom Right</option>
+                                </select>
+                            </div>
+                            <div id="backdrop-settings-1">
+                                <div class="selectContainer">
+                                    <label for="backdropBadgePos">Backdrop Badge Position (Tier 3+)</label>
+                                    <select is="emby-select" id="backdropBadgePos">
+                                        <option value="left" selected>Top Left</option>
+                                        <option value="center">Top Center</option>
+                                        <option value="right">Top Right</option>
+                                        <option value="bottom%7Cleft">Bottom Left</option>
+                                        <option value="bottom%7Ccenter">Bottom Center</option>
+                                        <option value="bottom%7Cright">Bottom Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="checkboxContainer">
+                                    <input is="emby-checkbox" type="checkbox" id="ageRating"/>
+                                    <span>Age Rating (13+, 14+, etc)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkboxContainer">
+                                    <input is="emby-checkbox" type="checkbox" id="videoQuality"/>
+                                    <span>Video Quality Badge (4K, 1080p, etc)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkboxContainer">
+                                    <input is="emby-checkbox" type="checkbox" id="video3D"/>
+                                    <span>3D Badge (if video is 3D)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkboxContainer">
+                                    <input is="emby-checkbox" type="checkbox" id="colorRange"/>
+                                    <span>Color Range Badge (HDR / Dolby Vision)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkboxContainer">
+                                    <input is="emby-checkbox" type="checkbox" id="audioChannels"/>
+                                    <span>Audio Channels Badge (2.0 / 5.1 / 7.1)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkboxContainer">
+                                    <input is="emby-checkbox" type="checkbox" id="videoCodec"/>
+                                    <span>Video Codec Badge (h265, h264, etc)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="checkboxContainer">
+                                <input is="emby-checkbox" type="checkbox" id="addStyles"/>
+                                <span>Add Image Styles (size, bar position, color, etc) (Tier 3+)</span>
+                            </label>
+                        </div>
+                        <div id="stylesSettings" style="display: none">
+                            <div class="selectContainer">
+                                <label for="posterSize">Poster Size</label>
+                                <select is="emby-select" id="posterSize">
+                                    <option value="medium" selected>Normal</option>
+                                    <option value="large">Large</option>
+                                    <option value="verylarge">4K (slow)</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="posterBarPos">Poster Rating Bar Position</label>
+                                <select is="emby-select" id="posterBarPos">
+                                    <option value="bottom" selected>Bottom</option>
+                                    <option value="top">Top</option>
+                                    <option value="left-top">Left Top</option>
+                                    <option value="left-center">Left Center</option>
+                                    <option value="left-bottom">Left Bottom</option>
+                                    <option value="right-top">Right Top</option>
+                                    <option value="right-center">Right Center</option>
+                                    <option value="right-bottom">Right Bottom</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="posterBarOpacity">Poster Rating Bar Opacity</label>
+                                <select is="emby-select" id="posterBarOpacity">
+                                    <option value="default" selected>Default (94%)</option>
+                                    <option value="0.99">100%</option>
+                                    <option value="0.9">90%</option>
+                                    <option value="0.8">80%</option>
+                                    <option value="0.7">70%</option>
+                                    <option value="0.6">60%</option>
+                                    <option value="0.5">50%</option>
+                                    <option value="0.4">40%</option>
+                                    <option value="0.3">30%</option>
+                                    <option value="0.2">20%</option>
+                                    <option value="0.1">10%</option>
+                                    <option value="0.01">0%</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="posterBarColor">Poster Rating Bar Color</label>
+                                <select is="emby-select" id="posterBarColor">
+                                    <option value="default" selected>Default (Dark Gray)</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="red">Red</option>
+                                    <option value="green">Green</option>
+                                    <option value="black">Black</option>
+                                    <option value="white">White</option>
+                                    <option value="gray">Gray</option>
+                                    <option value="purple">Purple</option>
+                                    <option value="pink">Pink</option>
+                                    <option value="yellow">Yellow</option>
+                                    <option value="aliceblue">Alice Blue</option>
+                                    <option value="antiquewhite">Antique White</option>
+                                    <option value="aqua">Aqua</option>
+                                    <option value="aquamarine">Aquamarine</option>
+                                    <option value="azure">Azure</option>
+                                    <option value="beige">Beige</option>
+                                    <option value="bisque">Bisque</option>
+                                    <option value="blanchedalmond">Blanched Almond</option>
+                                    <option value="blueviolet">Blue Violet</option>
+                                    <option value="brown">Brown</option>
+                                    <option value="burlywood">Burlywood</option>
+                                    <option value="cadetblue">Cadet Blue</option>
+                                    <option value="chartreuse">Chartreuse</option>
+                                    <option value="chocolate">Chocolate</option>
+                                    <option value="coral">Coral</option>
+                                    <option value="cornflowerblue">Cornflower Blue</option>
+                                    <option value="cornsilk">Corn Silk</option>
+                                    <option value="crimson">Crimson</option>
+                                    <option value="cyan">Cyan</option>
+                                    <option value="darkblue">Dark Blue</option>
+                                    <option value="darkcyan">Dark Cyan</option>
+                                    <option value="darkgoldenrod">Dark Golden Rod</option>
+                                    <option value="darkgray">Dark Gray</option>
+                                    <option value="darkgreen">Dark Green</option>
+                                    <option value="darkkhaki">Dark Khaki</option>
+                                    <option value="darkmagenta">Dark Magenta</option>
+                                    <option value="darkolivegreen">Dark Olive Green</option>
+                                    <option value="darkorange">Dark Orange</option>
+                                    <option value="darkorchid">Dark Orchid</option>
+                                    <option value="darkred">Dark Red</option>
+                                    <option value="darksalmon">Dark Salmon</option>
+                                    <option value="darkseagreen">Dark Sea Green</option>
+                                    <option value="darkslateblue">Dark Slate Blue</option>
+                                    <option value="darkslategray">Dark Slate Gray</option>
+                                    <option value="darkturquoise">Dark Turquoise</option>
+                                    <option value="darkviolet">Dark Violet</option>
+                                    <option value="deeppink">Deep Pink</option>
+                                    <option value="deepskyblue">Deep Sky Blue</option>
+                                    <option value="dimgray">Dim Gray</option>
+                                    <option value="dodgerblue">Dodger Blue</option>
+                                    <option value="firebrick">Fire Brick</option>
+                                    <option value="floralwhite">Floral White</option>
+                                    <option value="forestgreen">Forest Green</option>
+                                    <option value="fuchsia">Fuchsia</option>
+                                    <option value="gainsboro">Grainsboro</option>
+                                    <option value="ghostwhite">Ghost White</option>
+                                    <option value="gold">Gold</option>
+                                    <option value="goldenrod">Golder Rod</option>
+                                    <option value="greenyellow">Green Yellow</option>
+                                    <option value="honeydew">Honeydew</option>
+                                    <option value="hotpink">Hot Pink</option>
+                                    <option value="indianred">Indian Red</option>
+                                    <option value="indigo">Indigo</option>
+                                    <option value="ivory">Ivory</option>
+                                    <option value="khaki">Khaki</option>
+                                    <option value="lavender">Lavender</option>
+                                    <option value="lavenderblush">Lavender Blush</option>
+                                    <option value="lawngreen">Lawn Green</option>
+                                    <option value="lemonchiffon">Lemon Chiffon</option>
+                                    <option value="lightblue">Light Blue</option>
+                                    <option value="lightcoral">Light Coral</option>
+                                    <option value="lightcyan">Light Cyan</option>
+                                    <option value="lightgoldenrodyellow">Light Golden Rod Yellow</option>
+                                    <option value="lightgray">Light Gray</option>
+                                    <option value="lightgreen">Light Green</option>
+                                    <option value="lightgray">Light Gray</option>
+                                    <option value="lightpink">Light Pink</option>
+                                    <option value="lightsalmon">Light Salmon</option>
+                                    <option value="lightseagreen">Light Sea Green</option>
+                                    <option value="lightskyblue">Light Sky Blue</option>
+                                    <option value="lightslategray">Light Slate Gray</option>
+                                    <option value="lightsteelblue">Light Steel Blue</option>
+                                    <option value="lightyellow">Light Yellow</option>
+                                    <option value="lime">Lime</option>
+                                    <option value="limegreen">Lime Green</option>
+                                    <option value="linen">Linen</option>
+                                    <option value="magenta">Magenta</option>
+                                    <option value="maroon">Maroon</option>
+                                    <option value="mediumaquamarine">Medium Aquamarine</option>
+                                    <option value="mediumblue">Medium Blue</option>
+                                    <option value="mediumorchid">Medium Orchid</option>
+                                    <option value="mediumpurple">Medium Purple</option>
+                                    <option value="mediumseagreen">Mediu Sea Green</option>
+                                    <option value="mediumslateblue">Medium Slate Blue</option>
+                                    <option value="mediumspringgreen">Medium Spring Green</option>
+                                    <option value="mediumturquoise">Medium Turquoise</option>
+                                    <option value="mediumvioletred">Medium Violet Red</option>
+                                    <option value="midnightblue">Midnight Blue</option>
+                                    <option value="mintcream">Mint Cream</option>
+                                    <option value="mistyrose">Misty Rose</option>
+                                    <option value="moccasin">Moccasin</option>
+                                    <option value="navajowhite">Navajo White</option>
+                                    <option value="navy">Navy</option>
+                                    <option value="oldlace">Old Lace</option>
+                                    <option value="olive">Olive</option>
+                                    <option value="olivedrab">Olive Drab</option>
+                                    <option value="orange">Orange</option>
+                                    <option value="orangered">Orange Red</option>
+                                    <option value="orchid">Orchid</option>
+                                    <option value="palegoldenrod">Pale Golden Rod</option>
+                                    <option value="palegreen">Pale Green</option>
+                                    <option value="paleturquoise">Pale Turquoise</option>
+                                    <option value="palevioletred">Pale Violet Red</option>
+                                    <option value="papayawhip">Papaya Whip</option>
+                                    <option value="peachpuff">Peach Puff</option>
+                                    <option value="peru">Peru</option>
+                                    <option value="plum">Plum</option>
+                                    <option value="powderblue">Powder Blue</option>
+                                    <option value="rebeccapurple">Rebecca Purple</option>
+                                    <option value="rosybrown">Rosy Brown</option>
+                                    <option value="royalblue">Royal Blue</option>
+                                    <option value="saddlebrown">Saddle Brown</option>
+                                    <option value="salmon">Salmon</option>
+                                    <option value="sandybrown">Sandy Brown</option>
+                                    <option value="seagreen">Sea Green</option>
+                                    <option value="seashell">Seashell</option>
+                                    <option value="sienna">Sienna</option>
+                                    <option value="silver">Silver</option>
+                                    <option value="skyblue">Sky Blue</option>
+                                    <option value="slateblue">Slate Blue</option>
+                                    <option value="slategray">Slate Gray</option>
+                                    <option value="snow">Snow</option>
+                                    <option value="springgreen">Spring Green</option>
+                                    <option value="steelblue">Steel Blue</option>
+                                    <option value="tan">Tan</option>
+                                    <option value="teal">Teal</option>
+                                    <option value="thistle">Thistle</option>
+                                    <option value="tomato">Tomato</option>
+                                    <option value="turquoise">Turqouise</option>
+                                    <option value="violet">Violet</option>
+                                    <option value="wheat">Wheat</option>
+                                    <option value="whitesmoke">White Smoke</option>
+                                    <option value="yellowgreen">Yellow Green</option>
+                                </select>
+                            </div>
+                            <div class="selectContainer">
+                                <label for="posterFontColor">Poster Font Color</label>
+                                <select is="emby-select" id="posterFontColor">
+                                    <option value="default" selected>Default (White)</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="red">Red</option>
+                                    <option value="green">Green</option>
+                                    <option value="black">Black</option>
+                                    <option value="white">White</option>
+                                    <option value="gray">Gray</option>
+                                    <option value="purple">Purple</option>
+                                    <option value="pink">Pink</option>
+                                    <option value="yellow">Yellow</option>
+                                    <option value="aliceblue">Alice Blue</option>
+                                    <option value="antiquewhite">Antique White</option>
+                                    <option value="aqua">Aqua</option>
+                                    <option value="aquamarine">Aquamarine</option>
+                                    <option value="azure">Azure</option>
+                                    <option value="beige">Beige</option>
+                                    <option value="bisque">Bisque</option>
+                                    <option value="blanchedalmond">Blanched Almond</option>
+                                    <option value="blueviolet">Blue Violet</option>
+                                    <option value="brown">Brown</option>
+                                    <option value="burlywood">Burlywood</option>
+                                    <option value="cadetblue">Cadet Blue</option>
+                                    <option value="chartreuse">Chartreuse</option>
+                                    <option value="chocolate">Chocolate</option>
+                                    <option value="coral">Coral</option>
+                                    <option value="cornflowerblue">Cornflower Blue</option>
+                                    <option value="cornsilk">Corn Silk</option>
+                                    <option value="crimson">Crimson</option>
+                                    <option value="cyan">Cyan</option>
+                                    <option value="darkblue">Dark Blue</option>
+                                    <option value="darkcyan">Dark Cyan</option>
+                                    <option value="darkgoldenrod">Dark Golden Rod</option>
+                                    <option value="darkgray">Dark Gray</option>
+                                    <option value="darkgreen">Dark Green</option>
+                                    <option value="darkkhaki">Dark Khaki</option>
+                                    <option value="darkmagenta">Dark Magenta</option>
+                                    <option value="darkolivegreen">Dark Olive Green</option>
+                                    <option value="darkorange">Dark Orange</option>
+                                    <option value="darkorchid">Dark Orchid</option>
+                                    <option value="darkred">Dark Red</option>
+                                    <option value="darksalmon">Dark Salmon</option>
+                                    <option value="darkseagreen">Dark Sea Green</option>
+                                    <option value="darkslateblue">Dark Slate Blue</option>
+                                    <option value="darkslategray">Dark Slate Gray</option>
+                                    <option value="darkturquoise">Dark Turquoise</option>
+                                    <option value="darkviolet">Dark Violet</option>
+                                    <option value="deeppink">Deep Pink</option>
+                                    <option value="deepskyblue">Deep Sky Blue</option>
+                                    <option value="dimgray">Dim Gray</option>
+                                    <option value="dodgerblue">Dodger Blue</option>
+                                    <option value="firebrick">Fire Brick</option>
+                                    <option value="floralwhite">Floral White</option>
+                                    <option value="forestgreen">Forest Green</option>
+                                    <option value="fuchsia">Fuchsia</option>
+                                    <option value="gainsboro">Grainsboro</option>
+                                    <option value="ghostwhite">Ghost White</option>
+                                    <option value="gold">Gold</option>
+                                    <option value="goldenrod">Golder Rod</option>
+                                    <option value="greenyellow">Green Yellow</option>
+                                    <option value="honeydew">Honeydew</option>
+                                    <option value="hotpink">Hot Pink</option>
+                                    <option value="indianred">Indian Red</option>
+                                    <option value="indigo">Indigo</option>
+                                    <option value="ivory">Ivory</option>
+                                    <option value="khaki">Khaki</option>
+                                    <option value="lavender">Lavender</option>
+                                    <option value="lavenderblush">Lavender Blush</option>
+                                    <option value="lawngreen">Lawn Green</option>
+                                    <option value="lemonchiffon">Lemon Chiffon</option>
+                                    <option value="lightblue">Light Blue</option>
+                                    <option value="lightcoral">Light Coral</option>
+                                    <option value="lightcyan">Light Cyan</option>
+                                    <option value="lightgoldenrodyellow">Light Golden Rod Yellow</option>
+                                    <option value="lightgray">Light Gray</option>
+                                    <option value="lightgreen">Light Green</option>
+                                    <option value="lightgray">Light Gray</option>
+                                    <option value="lightpink">Light Pink</option>
+                                    <option value="lightsalmon">Light Salmon</option>
+                                    <option value="lightseagreen">Light Sea Green</option>
+                                    <option value="lightskyblue">Light Sky Blue</option>
+                                    <option value="lightslategray">Light Slate Gray</option>
+                                    <option value="lightsteelblue">Light Steel Blue</option>
+                                    <option value="lightyellow">Light Yellow</option>
+                                    <option value="lime">Lime</option>
+                                    <option value="limegreen">Lime Green</option>
+                                    <option value="linen">Linen</option>
+                                    <option value="magenta">Magenta</option>
+                                    <option value="maroon">Maroon</option>
+                                    <option value="mediumaquamarine">Medium Aquamarine</option>
+                                    <option value="mediumblue">Medium Blue</option>
+                                    <option value="mediumorchid">Medium Orchid</option>
+                                    <option value="mediumpurple">Medium Purple</option>
+                                    <option value="mediumseagreen">Mediu Sea Green</option>
+                                    <option value="mediumslateblue">Medium Slate Blue</option>
+                                    <option value="mediumspringgreen">Medium Spring Green</option>
+                                    <option value="mediumturquoise">Medium Turquoise</option>
+                                    <option value="mediumvioletred">Medium Violet Red</option>
+                                    <option value="midnightblue">Midnight Blue</option>
+                                    <option value="mintcream">Mint Cream</option>
+                                    <option value="mistyrose">Misty Rose</option>
+                                    <option value="moccasin">Moccasin</option>
+                                    <option value="navajowhite">Navajo White</option>
+                                    <option value="navy">Navy</option>
+                                    <option value="oldlace">Old Lace</option>
+                                    <option value="olive">Olive</option>
+                                    <option value="olivedrab">Olive Drab</option>
+                                    <option value="orange">Orange</option>
+                                    <option value="orangered">Orange Red</option>
+                                    <option value="orchid">Orchid</option>
+                                    <option value="palegoldenrod">Pale Golden Rod</option>
+                                    <option value="palegreen">Pale Green</option>
+                                    <option value="paleturquoise">Pale Turquoise</option>
+                                    <option value="palevioletred">Pale Violet Red</option>
+                                    <option value="papayawhip">Papaya Whip</option>
+                                    <option value="peachpuff">Peach Puff</option>
+                                    <option value="peru">Peru</option>
+                                    <option value="plum">Plum</option>
+                                    <option value="powderblue">Powder Blue</option>
+                                    <option value="rebeccapurple">Rebecca Purple</option>
+                                    <option value="rosybrown">Rosy Brown</option>
+                                    <option value="royalblue">Royal Blue</option>
+                                    <option value="saddlebrown">Saddle Brown</option>
+                                    <option value="salmon">Salmon</option>
+                                    <option value="sandybrown">Sandy Brown</option>
+                                    <option value="seagreen">Sea Green</option>
+                                    <option value="seashell">Seashell</option>
+                                    <option value="sienna">Sienna</option>
+                                    <option value="silver">Silver</option>
+                                    <option value="skyblue">Sky Blue</option>
+                                    <option value="slateblue">Slate Blue</option>
+                                    <option value="slategray">Slate Gray</option>
+                                    <option value="snow">Snow</option>
+                                    <option value="springgreen">Spring Green</option>
+                                    <option value="steelblue">Steel Blue</option>
+                                    <option value="tan">Tan</option>
+                                    <option value="teal">Teal</option>
+                                    <option value="thistle">Thistle</option>
+                                    <option value="tomato">Tomato</option>
+                                    <option value="turquoise">Turqouise</option>
+                                    <option value="violet">Violet</option>
+                                    <option value="wheat">Wheat</option>
+                                    <option value="whitesmoke">White Smoke</option>
+                                    <option value="yellowgreen">Yellow Green</option>
+                                </select>
+                            </div>
+                            <div id="backdrop-settings-2">
+                                <div class="selectContainer">
+                                    <label for="backdropSize">Backdrop Size</label>
+                                    <select is="emby-select" id="backdropSize">
+                                        <option value="medium" selected>Default (1080p)</option>
+                                        <option value="small">Small (720p)</option>
+                                        <option value="large">4K (slow)</option>
+                                    </select>
+                                </div>
+                                <div class="selectContainer">
+                                    <label for="backdropBarPos">Backdrop Rating Bar Position</label>
+                                    <select is="emby-select" id="backdropBarPos">
+                                        <option value="right-top" selected>Right Top</option>
+                                        <option value="right-center">Right Center</option>
+                                        <option value="right-bottom">Right Bottom</option>
+                                        <option value="left-top">Left Top</option>
+                                        <option value="left-center">Left Center</option>
+                                        <option value="left-bottom">Left Bottom</option>
+                                    </select>
+                                </div>
+                                <div class="selectContainer">
+                                    <label for="backdropBarOpacity">Backdrop Rating Bar Opacity</label>
+                                    <select is="emby-select" id="backdropBarOpacity">
+                                        <option value="default" selected>Default (94%)</option>
+                                        <option value="0.99">100%</option>
+                                        <option value="0.9">90%</option>
+                                        <option value="0.8">80%</option>
+                                        <option value="0.7">70%</option>
+                                        <option value="0.6">60%</option>
+                                        <option value="0.5">50%</option>
+                                        <option value="0.4">40%</option>
+                                        <option value="0.3">30%</option>
+                                        <option value="0.2">20%</option>
+                                        <option value="0.1">10%</option>
+                                        <option value="0.01">0%</option>
+                                    </select>
+                                </div>
+                                <div class="selectContainer">
+                                    <label for="backdropBarColor">Backdrop Rating Bar Color</label>
+                                    <select is="emby-select" id="backdropBarColor">
+                                        <option value="default" selected>Default (Dark Gray)</option>
+                                        <option value="blue">Blue</option>
+                                        <option value="red">Red</option>
+                                        <option value="green">Green</option>
+                                        <option value="black">Black</option>
+                                        <option value="white">White</option>
+                                        <option value="gray">Gray</option>
+                                        <option value="purple">Purple</option>
+                                        <option value="pink">Pink</option>
+                                        <option value="yellow">Yellow</option>
+                                        <option value="aliceblue">Alice Blue</option>
+                                        <option value="antiquewhite">Antique White</option>
+                                        <option value="aqua">Aqua</option>
+                                        <option value="aquamarine">Aquamarine</option>
+                                        <option value="azure">Azure</option>
+                                        <option value="beige">Beige</option>
+                                        <option value="bisque">Bisque</option>
+                                        <option value="blanchedalmond">Blanched Almond</option>
+                                        <option value="blueviolet">Blue Violet</option>
+                                        <option value="brown">Brown</option>
+                                        <option value="burlywood">Burlywood</option>
+                                        <option value="cadetblue">Cadet Blue</option>
+                                        <option value="chartreuse">Chartreuse</option>
+                                        <option value="chocolate">Chocolate</option>
+                                        <option value="coral">Coral</option>
+                                        <option value="cornflowerblue">Cornflower Blue</option>
+                                        <option value="cornsilk">Corn Silk</option>
+                                        <option value="crimson">Crimson</option>
+                                        <option value="cyan">Cyan</option>
+                                        <option value="darkblue">Dark Blue</option>
+                                        <option value="darkcyan">Dark Cyan</option>
+                                        <option value="darkgoldenrod">Dark Golden Rod</option>
+                                        <option value="darkgray">Dark Gray</option>
+                                        <option value="darkgreen">Dark Green</option>
+                                        <option value="darkkhaki">Dark Khaki</option>
+                                        <option value="darkmagenta">Dark Magenta</option>
+                                        <option value="darkolivegreen">Dark Olive Green</option>
+                                        <option value="darkorange">Dark Orange</option>
+                                        <option value="darkorchid">Dark Orchid</option>
+                                        <option value="darkred">Dark Red</option>
+                                        <option value="darksalmon">Dark Salmon</option>
+                                        <option value="darkseagreen">Dark Sea Green</option>
+                                        <option value="darkslateblue">Dark Slate Blue</option>
+                                        <option value="darkslategray">Dark Slate Gray</option>
+                                        <option value="darkturquoise">Dark Turquoise</option>
+                                        <option value="darkviolet">Dark Violet</option>
+                                        <option value="deeppink">Deep Pink</option>
+                                        <option value="deepskyblue">Deep Sky Blue</option>
+                                        <option value="dimgray">Dim Gray</option>
+                                        <option value="dodgerblue">Dodger Blue</option>
+                                        <option value="firebrick">Fire Brick</option>
+                                        <option value="floralwhite">Floral White</option>
+                                        <option value="forestgreen">Forest Green</option>
+                                        <option value="fuchsia">Fuchsia</option>
+                                        <option value="gainsboro">Grainsboro</option>
+                                        <option value="ghostwhite">Ghost White</option>
+                                        <option value="gold">Gold</option>
+                                        <option value="goldenrod">Golder Rod</option>
+                                        <option value="greenyellow">Green Yellow</option>
+                                        <option value="honeydew">Honeydew</option>
+                                        <option value="hotpink">Hot Pink</option>
+                                        <option value="indianred">Indian Red</option>
+                                        <option value="indigo">Indigo</option>
+                                        <option value="ivory">Ivory</option>
+                                        <option value="khaki">Khaki</option>
+                                        <option value="lavender">Lavender</option>
+                                        <option value="lavenderblush">Lavender Blush</option>
+                                        <option value="lawngreen">Lawn Green</option>
+                                        <option value="lemonchiffon">Lemon Chiffon</option>
+                                        <option value="lightblue">Light Blue</option>
+                                        <option value="lightcoral">Light Coral</option>
+                                        <option value="lightcyan">Light Cyan</option>
+                                        <option value="lightgoldenrodyellow">Light Golden Rod Yellow</option>
+                                        <option value="lightgray">Light Gray</option>
+                                        <option value="lightgreen">Light Green</option>
+                                        <option value="lightgray">Light Gray</option>
+                                        <option value="lightpink">Light Pink</option>
+                                        <option value="lightsalmon">Light Salmon</option>
+                                        <option value="lightseagreen">Light Sea Green</option>
+                                        <option value="lightskyblue">Light Sky Blue</option>
+                                        <option value="lightslategray">Light Slate Gray</option>
+                                        <option value="lightsteelblue">Light Steel Blue</option>
+                                        <option value="lightyellow">Light Yellow</option>
+                                        <option value="lime">Lime</option>
+                                        <option value="limegreen">Lime Green</option>
+                                        <option value="linen">Linen</option>
+                                        <option value="magenta">Magenta</option>
+                                        <option value="maroon">Maroon</option>
+                                        <option value="mediumaquamarine">Medium Aquamarine</option>
+                                        <option value="mediumblue">Medium Blue</option>
+                                        <option value="mediumorchid">Medium Orchid</option>
+                                        <option value="mediumpurple">Medium Purple</option>
+                                        <option value="mediumseagreen">Mediu Sea Green</option>
+                                        <option value="mediumslateblue">Medium Slate Blue</option>
+                                        <option value="mediumspringgreen">Medium Spring Green</option>
+                                        <option value="mediumturquoise">Medium Turquoise</option>
+                                        <option value="mediumvioletred">Medium Violet Red</option>
+                                        <option value="midnightblue">Midnight Blue</option>
+                                        <option value="mintcream">Mint Cream</option>
+                                        <option value="mistyrose">Misty Rose</option>
+                                        <option value="moccasin">Moccasin</option>
+                                        <option value="navajowhite">Navajo White</option>
+                                        <option value="navy">Navy</option>
+                                        <option value="oldlace">Old Lace</option>
+                                        <option value="olive">Olive</option>
+                                        <option value="olivedrab">Olive Drab</option>
+                                        <option value="orange">Orange</option>
+                                        <option value="orangered">Orange Red</option>
+                                        <option value="orchid">Orchid</option>
+                                        <option value="palegoldenrod">Pale Golden Rod</option>
+                                        <option value="palegreen">Pale Green</option>
+                                        <option value="paleturquoise">Pale Turquoise</option>
+                                        <option value="palevioletred">Pale Violet Red</option>
+                                        <option value="papayawhip">Papaya Whip</option>
+                                        <option value="peachpuff">Peach Puff</option>
+                                        <option value="peru">Peru</option>
+                                        <option value="plum">Plum</option>
+                                        <option value="powderblue">Powder Blue</option>
+                                        <option value="rebeccapurple">Rebecca Purple</option>
+                                        <option value="rosybrown">Rosy Brown</option>
+                                        <option value="royalblue">Royal Blue</option>
+                                        <option value="saddlebrown">Saddle Brown</option>
+                                        <option value="salmon">Salmon</option>
+                                        <option value="sandybrown">Sandy Brown</option>
+                                        <option value="seagreen">Sea Green</option>
+                                        <option value="seashell">Seashell</option>
+                                        <option value="sienna">Sienna</option>
+                                        <option value="silver">Silver</option>
+                                        <option value="skyblue">Sky Blue</option>
+                                        <option value="slateblue">Slate Blue</option>
+                                        <option value="slategray">Slate Gray</option>
+                                        <option value="snow">Snow</option>
+                                        <option value="springgreen">Spring Green</option>
+                                        <option value="steelblue">Steel Blue</option>
+                                        <option value="tan">Tan</option>
+                                        <option value="teal">Teal</option>
+                                        <option value="thistle">Thistle</option>
+                                        <option value="tomato">Tomato</option>
+                                        <option value="turquoise">Turqouise</option>
+                                        <option value="violet">Violet</option>
+                                        <option value="wheat">Wheat</option>
+                                        <option value="whitesmoke">White Smoke</option>
+                                        <option value="yellowgreen">Yellow Green</option>
+                                    </select>
+                                </div>
+                                <div class="selectContainer">
+                                    <label for="backdropFontColor">Backdrop Font Color</label>
+                                    <select is="emby-select" id="backdropFontColor">
+                                        <option value="default" selected>Default (White)</option>
+                                        <option value="blue">Blue</option>
+                                        <option value="red">Red</option>
+                                        <option value="green">Green</option>
+                                        <option value="black">Black</option>
+                                        <option value="white">White</option>
+                                        <option value="gray">Gray</option>
+                                        <option value="purple">Purple</option>
+                                        <option value="pink">Pink</option>
+                                        <option value="yellow">Yellow</option>
+                                        <option value="aliceblue">Alice Blue</option>
+                                        <option value="antiquewhite">Antique White</option>
+                                        <option value="aqua">Aqua</option>
+                                        <option value="aquamarine">Aquamarine</option>
+                                        <option value="azure">Azure</option>
+                                        <option value="beige">Beige</option>
+                                        <option value="bisque">Bisque</option>
+                                        <option value="blanchedalmond">Blanched Almond</option>
+                                        <option value="blueviolet">Blue Violet</option>
+                                        <option value="brown">Brown</option>
+                                        <option value="burlywood">Burlywood</option>
+                                        <option value="cadetblue">Cadet Blue</option>
+                                        <option value="chartreuse">Chartreuse</option>
+                                        <option value="chocolate">Chocolate</option>
+                                        <option value="coral">Coral</option>
+                                        <option value="cornflowerblue">Cornflower Blue</option>
+                                        <option value="cornsilk">Corn Silk</option>
+                                        <option value="crimson">Crimson</option>
+                                        <option value="cyan">Cyan</option>
+                                        <option value="darkblue">Dark Blue</option>
+                                        <option value="darkcyan">Dark Cyan</option>
+                                        <option value="darkgoldenrod">Dark Golden Rod</option>
+                                        <option value="darkgray">Dark Gray</option>
+                                        <option value="darkgreen">Dark Green</option>
+                                        <option value="darkkhaki">Dark Khaki</option>
+                                        <option value="darkmagenta">Dark Magenta</option>
+                                        <option value="darkolivegreen">Dark Olive Green</option>
+                                        <option value="darkorange">Dark Orange</option>
+                                        <option value="darkorchid">Dark Orchid</option>
+                                        <option value="darkred">Dark Red</option>
+                                        <option value="darksalmon">Dark Salmon</option>
+                                        <option value="darkseagreen">Dark Sea Green</option>
+                                        <option value="darkslateblue">Dark Slate Blue</option>
+                                        <option value="darkslategray">Dark Slate Gray</option>
+                                        <option value="darkturquoise">Dark Turquoise</option>
+                                        <option value="darkviolet">Dark Violet</option>
+                                        <option value="deeppink">Deep Pink</option>
+                                        <option value="deepskyblue">Deep Sky Blue</option>
+                                        <option value="dimgray">Dim Gray</option>
+                                        <option value="dodgerblue">Dodger Blue</option>
+                                        <option value="firebrick">Fire Brick</option>
+                                        <option value="floralwhite">Floral White</option>
+                                        <option value="forestgreen">Forest Green</option>
+                                        <option value="fuchsia">Fuchsia</option>
+                                        <option value="gainsboro">Grainsboro</option>
+                                        <option value="ghostwhite">Ghost White</option>
+                                        <option value="gold">Gold</option>
+                                        <option value="goldenrod">Golder Rod</option>
+                                        <option value="greenyellow">Green Yellow</option>
+                                        <option value="honeydew">Honeydew</option>
+                                        <option value="hotpink">Hot Pink</option>
+                                        <option value="indianred">Indian Red</option>
+                                        <option value="indigo">Indigo</option>
+                                        <option value="ivory">Ivory</option>
+                                        <option value="khaki">Khaki</option>
+                                        <option value="lavender">Lavender</option>
+                                        <option value="lavenderblush">Lavender Blush</option>
+                                        <option value="lawngreen">Lawn Green</option>
+                                        <option value="lemonchiffon">Lemon Chiffon</option>
+                                        <option value="lightblue">Light Blue</option>
+                                        <option value="lightcoral">Light Coral</option>
+                                        <option value="lightcyan">Light Cyan</option>
+                                        <option value="lightgoldenrodyellow">Light Golden Rod Yellow</option>
+                                        <option value="lightgray">Light Gray</option>
+                                        <option value="lightgreen">Light Green</option>
+                                        <option value="lightgray">Light Gray</option>
+                                        <option value="lightpink">Light Pink</option>
+                                        <option value="lightsalmon">Light Salmon</option>
+                                        <option value="lightseagreen">Light Sea Green</option>
+                                        <option value="lightskyblue">Light Sky Blue</option>
+                                        <option value="lightslategray">Light Slate Gray</option>
+                                        <option value="lightsteelblue">Light Steel Blue</option>
+                                        <option value="lightyellow">Light Yellow</option>
+                                        <option value="lime">Lime</option>
+                                        <option value="limegreen">Lime Green</option>
+                                        <option value="linen">Linen</option>
+                                        <option value="magenta">Magenta</option>
+                                        <option value="maroon">Maroon</option>
+                                        <option value="mediumaquamarine">Medium Aquamarine</option>
+                                        <option value="mediumblue">Medium Blue</option>
+                                        <option value="mediumorchid">Medium Orchid</option>
+                                        <option value="mediumpurple">Medium Purple</option>
+                                        <option value="mediumseagreen">Mediu Sea Green</option>
+                                        <option value="mediumslateblue">Medium Slate Blue</option>
+                                        <option value="mediumspringgreen">Medium Spring Green</option>
+                                        <option value="mediumturquoise">Medium Turquoise</option>
+                                        <option value="mediumvioletred">Medium Violet Red</option>
+                                        <option value="midnightblue">Midnight Blue</option>
+                                        <option value="mintcream">Mint Cream</option>
+                                        <option value="mistyrose">Misty Rose</option>
+                                        <option value="moccasin">Moccasin</option>
+                                        <option value="navajowhite">Navajo White</option>
+                                        <option value="navy">Navy</option>
+                                        <option value="oldlace">Old Lace</option>
+                                        <option value="olive">Olive</option>
+                                        <option value="olivedrab">Olive Drab</option>
+                                        <option value="orange">Orange</option>
+                                        <option value="orangered">Orange Red</option>
+                                        <option value="orchid">Orchid</option>
+                                        <option value="palegoldenrod">Pale Golden Rod</option>
+                                        <option value="palegreen">Pale Green</option>
+                                        <option value="paleturquoise">Pale Turquoise</option>
+                                        <option value="palevioletred">Pale Violet Red</option>
+                                        <option value="papayawhip">Papaya Whip</option>
+                                        <option value="peachpuff">Peach Puff</option>
+                                        <option value="peru">Peru</option>
+                                        <option value="plum">Plum</option>
+                                        <option value="powderblue">Powder Blue</option>
+                                        <option value="rebeccapurple">Rebecca Purple</option>
+                                        <option value="rosybrown">Rosy Brown</option>
+                                        <option value="royalblue">Royal Blue</option>
+                                        <option value="saddlebrown">Saddle Brown</option>
+                                        <option value="salmon">Salmon</option>
+                                        <option value="sandybrown">Sandy Brown</option>
+                                        <option value="seagreen">Sea Green</option>
+                                        <option value="seashell">Seashell</option>
+                                        <option value="sienna">Sienna</option>
+                                        <option value="silver">Silver</option>
+                                        <option value="skyblue">Sky Blue</option>
+                                        <option value="slateblue">Slate Blue</option>
+                                        <option value="slategray">Slate Gray</option>
+                                        <option value="snow">Snow</option>
+                                        <option value="springgreen">Spring Green</option>
+                                        <option value="steelblue">Steel Blue</option>
+                                        <option value="tan">Tan</option>
+                                        <option value="teal">Teal</option>
+                                        <option value="thistle">Thistle</option>
+                                        <option value="tomato">Tomato</option>
+                                        <option value="turquoise">Turqouise</option>
+                                        <option value="violet">Violet</option>
+                                        <option value="wheat">Wheat</option>
+                                        <option value="whitesmoke">White Smoke</option>
+                                        <option value="yellowgreen">Yellow Green</option>
+                                    </select>
+                                </div>
+                                <div class="selectContainer">
+                                    <label for="backdropCertsPos">Backdrop Certificate Position</label>
+                                    <select is="emby-select" id="backdropCertsPos">
+                                        <option value="left" selected>Top Left</option>
+                                        <option value="right">Top Right</option>        
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fieldDescription"><a id="preview-poster" is="emby-linkbutton" class="button-link" href="#" target="_blank">Preview Poster</a></div>
+                            <br/>
+                            <div class="fieldDescription"><a id="preview-backdrop" is="emby-linkbutton" class="button-link" href="#" target="_blank">Preview Backdrop</a></div>
+                            <br/>
+                        </div>
+                        <div>
+                            <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var RpdbConfig = {
+                pluginUniqueId: '72186ab4-3fce-4054-9207-bcdd18c9fc45'
+            };
+
+            $('#RpdbConfigPage').on('pageshow', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(RpdbConfig.pluginUniqueId).then(function (config) {
+                    $('#txtRpdbApiKey').val(config.UserApiKey || '');
+                    if (config.UserApiKey) {
+                        onLoadKey()
+                    }
+                    $('#posterType').val(config.PosterType || 'poster-default');
+                    $('#textless').prop("checked", !!(config.Textless === '1'));
+                    $('#backdrops').prop("checked", !!(config.Backdrops === '1'));
+
+                    setTimeout(function() {
+                        if (config.Backdrops === '1') {
+                            $('#preview-backdrop').show()
+                            $('#backdrop-settings-1').show()
+                            $('#backdrop-settings-2').show()
+                        }
+                    }, 500)
+
+                    $('#posterLang').val(config.PosterLang || 'en');
+
+                    if (config.PosterType === 'rating-order') {
+
+                        if (config.FirstRating && config.FirstRating !== 'imdb') {
+                            $('#firstRating').val(config.FirstRating)
+                        }
+
+                        if (config.SecondRating && config.SecondRating !== 'tomatoes-critics') {
+                            $('#secondRating').val(config.SecondRating)
+                        }
+
+                        if (config.ThirdRating && config.ThirdRating !== 'metacritic-critics') {
+                            $('#thirdRating').val(config.ThirdRating)
+                        }
+
+                        if (config.FirstBackupRating && config.FirstBackupRating !== 'none') {
+                            $('#firstBackupRating').val(config.FirstBackupRating)
+                        }
+
+                        if (config.SecondBackupRating && config.SecondBackupRating !== 'none') {
+                            $('#secondBackupRating').val(config.SecondBackupRating)
+                        }
+
+                        if (config.ThirdBackupRating && config.ThirdBackupRating !== 'none') {
+                            $('#thirdBackupRating').val(config.ThirdBackupRating)
+                        }
+
+                        $('.customOrderSettings').show()
+
+                    }
+
+                    $('#badgeSize').val(config.BadgeSize || 'normal')
+                    $('#badgePos').val(config.BadgePos || 'left')
+
+                    $('#backdropBadgePos').val(config.BackdropBadgePos || 'left')
+
+                    $('#ageRating').prop("checked", !!(config.AgeRating === '1'))
+                    $('#videoQuality').prop("checked", !!(config.VideoQuality === '1'))
+                    $('#video3D').prop("checked", !!(config.Video3D === '1'))
+                    $('#colorRange').prop("checked", !!(config.ColorRange === '1'))
+                    $('#audioChannels').prop("checked", !!(config.AudioChannels === '1'))
+                    $('#videoCodec').prop("checked", !!(config.VideoCodec === '1'))
+
+                    if ([config.AgeRating, config.VideoQuality, config.Video3D, config.ColorRange, config.AudioChannels, config.VideoCodec].some(function(el) { return el === '1' })) {
+                        $('#addBadges').prop("checked", true)
+                        $('#badgesSettings').show()
+                    }
+
+                    if ((config.PosterSize && config.PosterSize !== 'medium') ||
+                        (config.PosterBarPos && config.PosterBarPos !== 'bottom') ||
+                        (config.PosterBarOpacity && config.PosterBarOpacity !== 'default') ||
+                        (config.PosterBarColor && config.PosterBarColor !== 'default') ||
+                        (config.PosterFontColor && config.PosterFontColor !== 'default') ||
+                        (config.BackdropSize && config.BackdropSize !== 'medium') ||
+                        (config.BackdropBarPos && config.BackdropBarPos !== 'right-top') ||
+                        (config.BackdropBarOpacity && config.BackdropBarOpacity !== 'default') ||
+                        (config.BackdropBarColor && config.BackdropBarColor !== 'default') ||
+                        (config.BackdropFontColor && config.BackdropFontColor !== 'default') ||
+                        (config.BackdropCertsPos && config.BackdropCertsPos !== 'left')
+                    ) {
+                        $('#addStyles').prop("checked", true)
+                        $('#stylesSettings').show()
+                    }
+
+                    $('#posterSize').val(config.PosterSize || 'medium')
+                    $('#posterBarPos').val(config.PosterBarPos || 'bottom')
+                    $('#posterBarOpacity').val(config.PosterBarOpacity || 'default')
+                    $('#posterBarColor').val(config.PosterBarColor || 'default')
+                    $('#posterFontColor').val(config.PosterFontColor || 'default')
+
+                    $('#backdropSize').val(config.BackdropSize || 'medium')
+                    $('#backdropBarPos').val(config.BackdropBarPos || 'right-top')
+                    $('#backdropBarOpacity').val(config.BackdropBarOpacity || 'default')
+                    $('#backdropBarColor').val(config.BackdropBarColor || 'default')
+                    $('#backdropFontColor').val(config.BackdropFontColor || 'default')
+                    $('#backdropCertsPos').val(config.BackdropCertsPos || 'left')
+
+                    Dashboard.hideLoadingMsg();
+                });
+            });
+
+            $('#RpdbConfigForm').on('submit', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(RpdbConfig.pluginUniqueId).then(function (config) {
+                    config.UserApiKey = globalKey;
+                    config.PosterType = $('#posterType').val();
+                    config.Textless = $('#textless:checked').is(':checked') ? '1' : '0';
+                    config.Backdrops = $('#backdrops:checked').is(':checked') ? '1' : '0';
+                    config.PosterLang = $('#posterLang').val();
+
+                    config.FirstRating = $('#firstRating').val()
+                    config.SecondRating = $('#secondRating').val()
+                    config.ThirdRating = $('#thirdRating').val()
+                    config.FirstBackupRating = $('#firstBackupRating').val()
+                    config.SecondBackupRating = $('#secondBackupRating').val()
+                    config.ThirdBackupRating = $('#thirdBackupRating').val()
+
+                    config.BadgeSize = $('#badgeSize').val()
+                    config.BadgePos = $('#badgePos').val()
+                    config.BackdropBadgePos = $('#backdropBadgePos').val()
+
+                    config.AgeRating = $('#ageRating:checked').is(':checked') ? '1' : '0'
+                    config.VideoQuality = $('#videoQuality:checked').is(':checked') ? '1' : '0'
+                    config.Video3D = $('#video3D:checked').is(':checked') ? '1' : '0'
+                    config.ColorRange = $('#colorRange:checked').is(':checked') ? '1' : '0'
+                    config.AudioChannels = $('#audioChannels:checked').is(':checked') ? '1' : '0'
+                    config.VideoCodec = $('#videoCodec:checked').is(':checked') ? '1' : '0'
+
+                    config.PosterSize = $('#posterSize').val()
+                    config.PosterBarPos = $('#posterBarPos').val()
+                    config.PosterBarOpacity = $('#posterBarOpacity').val()
+                    config.PosterBarColor = $('#posterBarColor').val()
+                    config.PosterFontColor = $('#posterFontColor').val()
+
+                    config.BackdropSize = $('#backdropSize').val()
+                    config.BackdropBarPos = $('#backdropBarPos').val()
+                    config.BackdropBarOpacity = $('#backdropBarOpacity').val()
+                    config.BackdropBarColor = $('#backdropBarColor').val()
+                    config.BackdropFontColor = $('#backdropFontColor').val()
+                    config.BackdropCertsPos = $('#backdropCertsPos').val()
+
+                    ApiClient.updatePluginConfiguration(RpdbConfig.pluginUniqueId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    });
+                });
+                return false;
+            });
+
+            function onPosterTypeChanged() {
+                var posterType = $('#posterType').val()
+                if (posterType === 'rating-order') {
+                    if (globalKey.startsWith('t0-') || globalKey.startsWith('t1-')) {
+                        setTimeout(function() {
+                            $('#posterType').val('poster-default')
+                        }, 0);
+                    } else {
+                        $('.customOrderSettings').show()
+                    }
+                } else {
+                    if (globalKey.startsWith('t0-') && posterType !== 'poster-default') {
+                        setTimeout(function() {
+                            $('#posterType').val('poster-default')
+                        }, 0);
+                    }
+                    $('.customOrderSettings').hide()
+                }
+            }
+
+            $('#posterType').on('change', function() {
+                onPosterTypeChanged()
+            })
+            $('#addBadges').on('change', function() {
+                if ($('#addBadges:checked').is(':checked')) {
+                    $('#badgesSettings').show()
+                } else {
+                    $('#badgesSettings').hide()
+                }
+            })
+
+            $('#backdrops').on('change', function() {
+                if ($('#backdrops:checked').is(':checked')) {
+                    $('#preview-backdrop').show()
+                    $('#backdrop-settings-1').show()
+                    $('#backdrop-settings-2').show()
+                } else {
+                    $('#preview-backdrop').hide()
+                    $('#backdrop-settings-1').hide()
+                    $('#backdrop-settings-2').hide()
+                }
+            })
+
+            $('#addStyles').on('change', function() {
+                if ($('#addStyles:checked').is(':checked')) {
+                    $('#stylesSettings').show()
+                } else {
+                    $('#stylesSettings').hide()
+                }
+            })
+
+            $('.load-key').on('click', function (e) {
+                e.preventDefault()
+                onLoadKey();
+            });
+            $('#txtRpdbApiKey').keypress(function (e) {
+                if (e.which == 13) {
+                    onLoadKey();
+                    return false;
+                }
+            });
+            var globalKey = ''
+            function onLoadKey() {
+                globalKey = ''
+                var key = $('#txtRpdbApiKey').val()
+                $('.invalidKey').hide()
+                if (key && key.match(/^t[0-9]\-/)) {
+                    fetch('https://api.ratingposterdb.com/'+key+'/isValid').then(function(resp) {
+                        return resp.json()
+                    }).then(function(obj) {
+                        if ((obj || {}).valid) {
+                            globalKey = key
+                            if (globalKey.startsWith('t0-')) {
+                                $('#preview-backdrop').hide()
+                                $('#backdrop-settings-1').hide()
+                                $('#backdrop-settings-2').hide()
+                                $('#posterType').prop("disabled", true)
+                                $('#textless').prop("disabled", true)
+                                $('#backdrops').prop("disabled", true)
+                                $('#posterLang').prop("disabled", true)
+
+                                $('#addBadges').prop("disabled", true)
+                                $('#badgeSize').prop("disabled", true)
+                                $('#badgePos').prop("disabled", true)
+                                $('#backdropBadgePos').prop("disabled", true)
+
+                                $('#ageRating').prop("disabled", true)
+                                $('#videoQuality').prop("disabled", true)
+                                $('#video3D').prop("disabled", true)
+                                $('#colorRange').prop("disabled", true)
+                                $('#audioChannels').prop("disabled", true)
+                                $('#videoCodec').prop("disabled", true)
+
+                                $('#addStyles').prop("disabled", true)
+                                $('#posterSize').prop("disabled", true)
+                                $('#posterBarPos').prop("disabled", true)
+                                $('#posterBarOpacity').prop("disabled", true)
+                                $('#posterBarColor').prop("disabled", true)
+                                $('#posterFontColor').prop("disabled", true)
+                                $('#backdropSize').prop("disabled", true)
+                                $('#backdropBarPos').prop("disabled", true)
+                                $('#backdropBarOpacity').prop("disabled", true)
+                                $('#backdropBarColor').prop("disabled", true)
+                                $('#backdropFontColor').prop("disabled", true)
+                                $('#backdropCertsPos').prop("disabled", true)
+                            } else if (globalKey.startsWith('t1-')) {
+                                $('#preview-backdrop').hide()
+                                $('#backdrop-settings-1').hide()
+                                $('#backdrop-settings-2').hide()
+                                $('#posterType').prop("disabled", false)
+                                $('#textless').prop("disabled", false)
+                                $('#backdrops').prop("disabled", true)
+                                $('#posterLang').prop("disabled", false)
+
+                                $('#addBadges').prop("disabled", true)
+                                $('#badgeSize').prop("disabled", true)
+                                $('#badgePos').prop("disabled", true)
+                                $('#backdropBadgePos').prop("disabled", true)
+
+                                $('#ageRating').prop("disabled", true)
+                                $('#videoQuality').prop("disabled", true)
+                                $('#video3D').prop("disabled", true)
+                                $('#colorRange').prop("disabled", true)
+                                $('#audioChannels').prop("disabled", true)
+                                $('#videoCodec').prop("disabled", true)
+
+                                $('#addStyles').prop("disabled", true)
+                                $('#posterSize').prop("disabled", true)
+                                $('#posterBarPos').prop("disabled", true)
+                                $('#posterBarOpacity').prop("disabled", true)
+                                $('#posterBarColor').prop("disabled", true)
+                                $('#posterFontColor').prop("disabled", true)
+                                $('#backdropSize').prop("disabled", true)
+                                $('#backdropBarPos').prop("disabled", true)
+                                $('#backdropBarOpacity').prop("disabled", true)
+                                $('#backdropBarColor').prop("disabled", true)
+                                $('#backdropFontColor').prop("disabled", true)
+                                $('#backdropCertsPos').prop("disabled", true)
+                            } else if (globalKey.startsWith('t2-')) {
+                                $('#preview-backdrop').hide()
+                                $('#backdrop-settings-1').hide()
+                                $('#backdrop-settings-2').hide()
+                                $('#posterType').prop("disabled", false)
+                                $('#textless').prop("disabled", false)
+                                $('#backdrops').prop("disabled", false)
+                                $('#posterLang').prop("disabled", false)
+
+                                $('#addBadges').prop("disabled", false)
+                                $('#badgeSize').prop("disabled", false)
+                                $('#badgePos').prop("disabled", true)
+                                $('#backdropBadgePos').prop("disabled", true)
+
+                                $('#ageRating').prop("disabled", false)
+                                $('#videoQuality').prop("disabled", false)
+                                $('#video3D').prop("disabled", false)
+                                $('#colorRange').prop("disabled", false)
+                                $('#audioChannels').prop("disabled", false)
+                                $('#videoCodec').prop("disabled", false)
+
+                                $('#addStyles').prop("disabled", true)
+                                $('#posterSize').prop("disabled", true)
+                                $('#posterBarPos').prop("disabled", true)
+                                $('#posterBarOpacity').prop("disabled", true)
+                                $('#posterBarColor').prop("disabled", true)
+                                $('#posterFontColor').prop("disabled", true)
+                                $('#backdropSize').prop("disabled", true)
+                                $('#backdropBarPos').prop("disabled", true)
+                                $('#backdropBarOpacity').prop("disabled", true)
+                                $('#backdropBarColor').prop("disabled", true)
+                                $('#backdropFontColor').prop("disabled", true)
+                                $('#backdropCertsPos').prop("disabled", true)
+                            } else if (globalKey.match(/^t[3-9]\-/)) {
+                                $('#preview-backdrop').hide()
+                                $('#backdrop-settings-1').hide()
+                                $('#backdrop-settings-2').hide()
+                                $('#posterType').prop("disabled", false)
+                                $('#textless').prop("disabled", false)
+                                $('#backdrops').prop("disabled", false)
+                                $('#posterLang').prop("disabled", false)
+
+                                $('#addBadges').prop("disabled", false)
+                                $('#badgeSize').prop("disabled", false)
+                                $('#badgePos').prop("disabled", false)
+                                $('#backdropBadgePos').prop("disabled", false)
+
+                                $('#ageRating').prop("disabled", false)
+                                $('#videoQuality').prop("disabled", false)
+                                $('#video3D').prop("disabled", false)
+                                $('#colorRange').prop("disabled", false)
+                                $('#audioChannels').prop("disabled", false)
+                                $('#videoCodec').prop("disabled", false)
+
+                                $('#addStyles').prop("disabled", false)
+                                $('#posterSize').prop("disabled", false)
+                                $('#posterBarPos').prop("disabled", false)
+                                $('#posterBarOpacity').prop("disabled", false)
+                                $('#posterBarColor').prop("disabled", false)
+                                $('#posterFontColor').prop("disabled", false)
+                                $('#backdropSize').prop("disabled", false)
+                                $('#backdropBarPos').prop("disabled", false)
+                                $('#backdropBarOpacity').prop("disabled", false)
+                                $('#backdropBarColor').prop("disabled", false)
+                                $('#backdropFontColor').prop("disabled", false)
+                                $('#backdropCertsPos').prop("disabled", false)
+                            }
+                            $('.rpdbSettings').show()
+                            $('.load-key').hide()
+                            $('.keyHandler').hide()
+                        } else {
+                            $('.invalidKey').show()
+                        }
+                    }).catch(function(err) {
+                        $('.invalidKey').show()
+                    })
+                } else {
+                    $('.invalidKey').show()
+                }
+            }
+            $('.button-change-key').on('click', function(e) {
+                e.preventDefault();
+                globalKey = ''
+                $('.invalidKey').hide()
+                $('#txtRpdbApiKey').val('')
+                $('.rpdbSettings').hide()
+                $('.load-key').show()
+                $('.keyHandler').show()
+            });
+
+            $('#preview-poster').on('click', function (e) {
+                e.preventDefault();
+                var posterType = $('#posterType').val();
+
+                var extras = ''
+
+                if ($('#posterLang').val() !== 'en') {
+                    extras += '&lang=' + $('#posterLang').val()
+                }
+
+                if ($('#posterType').val() === 'rating-order') {
+                    extras += "&order=";
+                    extras += $('#firstRating').val();
+                    if ($('#secondRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#secondRating').val()
+                    }
+                    if ($('#thirdRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#thirdRating').val()
+                    }
+                    if ($('#firstBackupRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#firstBackupRating').val()
+                    }
+                    if ($('#secondBackupRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#secondBackupRating').val()
+                    }
+                    if ($('#thirdBackupRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#thirdBackupRating').val()
+                    }
+                }
+
+                if ($('#badgeSize').val() === "small") {
+                    extras += "&badgeSize=small";
+                }
+
+                if ($('#badgePos').val() !== 'left') {
+                    extras += '&badgePos=' + $('#badgePos').val();
+                }
+
+                var badgeArr = [];
+
+                if ($('#ageRating:checked').is(':checked')) {
+                    badgeArr.push('commonsensegold');
+                }
+
+                if ($('#videoQuality:checked').is(':checked')) {
+                    badgeArr.push('4k');
+                }
+
+                if ($('#video3D:checked').is(':checked')) {
+                    badgeArr.push('3d');
+                }
+
+                if ($('#colorRange:checked').is(':checked')) {
+                    badgeArr.push('dolbyvisioncolor');
+                }
+
+                if ($('#audioChannels:checked').is(':checked')) {
+                    badgeArr.push('audio71');
+                }
+
+                if ($('#videoCodec:checked').is(':checked')) {
+                    badgeArr.push('h265');
+                }
+
+                if (badgeArr.length) {
+                    extras += '&badges=' + badgeArr.join('%2C')
+                }
+
+                if ($('#posterSize').val() !== 'medium') {
+                    extras += '&imageSize=' + $('#posterSize').val()
+                }
+                
+                if ($('#posterBarPos').val() !== 'bottom') {
+                    extras += '&ratingBarPos=' + $('#posterBarPos').val()
+                }
+
+                if ($('#posterBarOpacity').val() !== 'default') {
+                    extras += '&ratingBarOpacity=' + $('#posterBarOpacity').val()
+                }
+
+                if ($('#posterBarColor').val() !== 'default') {
+                    extras += '&ratingBarColor=' + $('#posterBarColor').val()
+                }
+
+                if ($('#posterFontColor').val() !== 'default') {
+                    extras += '&fontColor=' + $('#posterFontColor').val()
+                }
+
+                if ($('#textless:checked').is(':checked')) {
+                    if (posterType.startsWith('poster-')) {
+                        posterType = posterType.replace('poster-', 'textless-')
+                    } else if (posterType.startsWith('rating-')) {
+                        posterType = posterType.replace('rating-', 'textless-')
+                    }
+                }
+
+                var url = 'http://api.ratingposterdb.com/'+globalKey+'/imdb/'+posterType+'/tt0068646.jpg'
+
+                if (extras !== '') {
+                    url += '?' + extras.substring(1)
+                }
+
+                window.open(url, '_blank').focus()
+            });
+            $('#preview-backdrop').on('click', function (e) {
+                e.preventDefault();
+
+                var posterType = 'backdrop-default'
+
+                var extras = ''
+
+                if ($('#posterType').val() === 'rating-order') {
+                    extras += "&order=";
+                    extras += $('#firstRating').val()
+                    if ($('#secondRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#secondRating').val()
+                    }
+                    if ($('#thirdRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#thirdRating').val()
+                    }
+                    if ($('#firstBackupRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#firstBackupRating').val()
+                    }
+                    if ($('#secondBackupRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#secondBackupRating').val()
+                    }
+                    if ($('#thirdBackupRating').val() !== "none")
+                    {
+                        extras += "%2C" + $('#thirdBackupRating').val()
+                    }
+                }
+
+                if ($('#badgeSize').val() === "small") {
+                    extras += "&badgeSize=small";
+                }
+
+                if ($('#backdropBadgePos').val() !== 'left') {
+                    extras += '&badgePos=' + $('#backdropBadgePos').val()
+                }
+
+                var badgeArr = [];
+
+                if ($('#ageRating:checked').is(':checked')) {
+                    badgeArr.push('commonsensegold');
+                }
+
+                if ($('#videoQuality:checked').is(':checked')) {
+                    badgeArr.push('4k');
+                }
+
+                if ($('#video3D:checked').is(':checked')) {
+                    badgeArr.push('3d');
+                }
+
+                if ($('#colorRange:checked').is(':checked')) {
+                    badgeArr.push('dolbyvisioncolor');
+                }
+
+                if ($('#audioChannels:checked').is(':checked')) {
+                    badgeArr.push('audio71');
+                }
+
+                if ($('#videoCodec:checked').is(':checked')) {
+                    badgeArr.push('h265');
+                }
+
+                if (badgeArr.length) {
+                    extras += '&badges=' + badgeArr.join('%2C')
+                }
+
+                if ($('#backdropSize').val() !== 'medium') {
+                    extras += '&imageSize=' + $('#backdropSize').val()
+                }
+                
+                if ($('#backdropBarPos').val() !== 'right-top') {
+                    extras += '&ratingBarPos=' + $('#backdropBarPos').val()
+                }
+
+                if ($('#backdropBarOpacity').val() !== 'default') {
+                    extras += '&ratingBarOpacity=' + $('#backdropBarOpacity').val()
+                }
+
+                if ($('#backdropBarColor').val() !== 'default') {
+                    extras += '&ratingBarColor=' + $('#backdropBarColor').val()
+                }
+
+                if ($('#backdropFontColor').val() !== 'default') {
+                    extras += '&fontColor=' + $('#backdropFontColor').val()
+                }
+
+                if ($('#backdropCertsPos').val() !== 'left') {
+                    extras += '&certsPos=' + $('#backdropCertsPos').val()
+                }
+
+                var url = 'http://api.ratingposterdb.com/'+globalKey+'/imdb/'+posterType+'/tt0068646.jpg'
+
+                if (extras !== '') {
+                    url += '?' + extras.substring(1)
+                }
+
+                window.open(url, '_blank').focus()
+            });
+        </script>
+    </div>
+</body>
+</html>
