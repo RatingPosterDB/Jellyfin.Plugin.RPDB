@@ -15,7 +15,7 @@ Currently supports:
 ## Installation
 
 - Repository for Jellyfin:
-  - Add to the list this URL:
+  - Add this URL to the list:
     - For **Jellyfin 10.10**
       ```
       https://raw.githubusercontent.com/RatingPosterDB/Jellyfin.Plugin.RPDB/refs/heads/main/repo/jellyfin_10.10.json
