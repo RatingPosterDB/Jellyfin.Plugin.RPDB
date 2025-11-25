@@ -9,12 +9,12 @@
         "imageUrl": "https://raw.githubusercontent.com/RatingPosterDB/Jellyfin.Plugin.RPDB/refs/heads/main/Jellyfin.Plugin.RPDB/thumb.png",
         "versions": [
             {
-                "checksum": "33ad672d352a6ecb795b3f6d7acd8200",
-                "changelog": "added all new RPDB Features and updated libraries",
+                "checksum": "6be53eca5f999466038d49f2ab28fae8",
+                "changelog": "Fixed a crash due to new added settings; Improved handling of rating order for backdrops and logos",
                 "targetAbi": "10.11.0.0",
-                "sourceUrl": "https://github.com/RatingPosterDB/Jellyfin.Plugin.RPDB/releases/download/v1.0.1.4/RPDB_1.0.1.4_jellyfin_10.11.zip",
-                "timestamp": "2025-10-25T08:47:27.283Z",
-                "version": "1.0.1.4"
+                "sourceUrl": "https://github.com/RatingPosterDB/Jellyfin.Plugin.RPDB/releases/download/v1.0.1.6/RPDB_1.0.1.6_jellyfin_10.11.zip",
+                "timestamp": "2025-11-25T15:42:45.040Z",
+                "version": "1.0.1.6"
             },
             {
                 "checksum": "97980b04fb2ab9b2bdc6920f226d922e",
@@ -25,12 +25,12 @@
                 "version": "1.0.1.5"
             },
             {
-                "checksum": "6be53eca5f999466038d49f2ab28fae8",
-                "changelog": "Fixed a crash due to new added settings; Improved handling of rating order for backdrops and logos",
+                "checksum": "33ad672d352a6ecb795b3f6d7acd8200",
+                "changelog": "added all new RPDB Features and updated libraries",
                 "targetAbi": "10.11.0.0",
-                "sourceUrl": "https://github.com/RatingPosterDB/Jellyfin.Plugin.RPDB/releases/download/v1.0.1.6/RPDB_1.0.1.6_jellyfin_10.11.zip",
-                "timestamp": "2025-11-25T15:42:45.040Z",
-                "version": "1.0.1.6"
+                "sourceUrl": "https://github.com/RatingPosterDB/Jellyfin.Plugin.RPDB/releases/download/v1.0.1.4/RPDB_1.0.1.4_jellyfin_10.11.zip",
+                "timestamp": "2025-10-25T08:47:27.283Z",
+                "version": "1.0.1.4"
             }
         ]
     }
