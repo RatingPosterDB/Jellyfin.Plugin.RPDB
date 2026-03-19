@@ -4,12 +4,15 @@ Jellyfin Plugin for [Rating Poster Database](https://ratingposterdb.com/).
 
 
 Currently supports:
-- Choosing poster type (Tier 1+): 4 available options
+- Image Rating Themes (Tier 1+)
+- Choose Rating Position (Tier 1+)
 - Textless posters (Tier 1+)
-- Poster Language (Tier 1+)
+- Default Poster Language (Tier 1+)
+- Custom Rating Order (from 11 rating sources) (Tier 1+)
 - Backdrops (Tier 2+)
-- Custom Rating Order (from 11 rating sources) (Tier 2+)
+- Logos (Tier 2+)
 - Badges (Tier 2+)
+- Font Size / Weight (Tier 2+)
 - Image Styling (size, bar position, bar color, font color, etc) (Tier 3+)
 
 ## Installation
@@ -55,10 +58,10 @@ To install manually on Jellyfin Server:
 - under "Refresh mode" choose "Replace all metadata"
 - enable "Replace existing images"
 
-Result screenshot:
+### Result screenshot
 
 ![jellyfin](https://user-images.githubusercontent.com/1777923/115111376-c7b79d00-9f88-11eb-85f5-af2107e697b4.jpg)
 
-Settings screenshot:
+### Settings screenshot
 
-![Jellyfin-Plugin-Settings](https://github.com/user-attachments/assets/0fac8bd3-2300-4475-9957-90110c2a801c)
+![Jellyfin-Plugin-Settings](https://github.com/user-attachments/assets/ed0e43cc-634c-4469-a2a7-c442941385f7)
