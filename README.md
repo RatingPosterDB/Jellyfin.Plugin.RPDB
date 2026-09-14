@@ -19,6 +19,10 @@ Currently supports:
 
 - Repository for Jellyfin:
   - Add this URL to the list:
+    - For **Jellyfin 12.0**
+      ```
+      https://raw.githubusercontent.com/RatingPosterDB/Jellyfin.Plugin.RPDB/refs/heads/main/repo/jellyfin_12.0.json
+      ```
     - For **Jellyfin 10.11**
       ```
       https://raw.githubusercontent.com/RatingPosterDB/Jellyfin.Plugin.RPDB/refs/heads/main/repo/jellyfin_10.11.json
